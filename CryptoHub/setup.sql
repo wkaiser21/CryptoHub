@@ -1,9 +1,8 @@
-CREATE DATABASE exercise5a;
-\c exercise5a;
-CREATE TABLE animals (
+CREATE DATABASE CryptoHub;
+\c CryptoHub;
+CREATE TABLE Users (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(50),
-	age INT,
-	species VARCHAR(25)
+	name VARCHAR(25),
+	pass VARCHAR(50),
 );
-INSERT INTO animals (name, age, species) VALUES ('Test', 77, 'test');
+INSERT INTO Users (id, name, pass) VALUES ('nd596', 'Nizom Djuraev', 'testPass');
