@@ -3,11 +3,18 @@ let searchButton = document.getElementById("submit");
 
 searchButton.addEventListener("click",() =>{
     let selectedcoin = document.getElementById("Coins").value;
+    let useramount = document.getElementById("amount"); 
+    let messageDiv = document.getElementById("message"); 
+    let responsestat; 
+    let sendurl; 
+
     console.log("Selected Coin:" + selectedcoin); 
-    let sendurl = "/search?coin="+selectedcoin; 
+    sendurl = "/search?coin="+selectedcoin; 
     console.log("Send URL:" + sendurl); 
 
-    let responsestat; 
+    //if(typeof(useramount) != )
+    console.log("type of " + typeof(useramount)); 
+    
     fetch(sendurl).then((response) => {
         responsestat = response.status; 
         return response.json(); 
