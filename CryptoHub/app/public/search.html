@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Demo</title>
+	<title>Crypto Coin Search</title>
 	<style>
 		table {
 			border-collapse: collapse;
@@ -18,28 +18,23 @@
 <p>Search for:</p>
 
 <div>
-	<label for="species">Species:</label>
-	<select id="species" name="species">
+	<label for="Coins">Coins:</label>
+	<select id="Coins" name="Coins">
 		<option value="">Please select your pet's species</option>
-		<option value="cat">Cat</option>
-		<option value="dog">Dog</option>
-		<option value="turtle">Turtle</option>
-		<option value="antelope">Antelope</option>
+		<option value="bitcoin">Bitcoin</option>
+		<option value="ethereum">Ethereum</option>
+		<option value="ripple">Ripple</option>
+		<option value="eos">Eos</option>
 	</select>
 </div>
 <button id="submit">Search</button>
 
 <table>
-	<tr><th>Name</th><th>Age</th><th>Species</th></tr>
+	<tr><th>Name</th><th>Value (USD)</th><th>Date/Time</th></tr>
 	<tbody id="results"></tbody>
 </table>
 
-<script>
-
-let table = document.getElementById("results");
-let button = document.getElementById("submit");
-
-</script>
+<script src="client.js"></script>
 
 </body>
 </html>
