@@ -14,11 +14,7 @@ let { Pool } = require("pg");
 //     console.log("Connected to database");
 // });
 
-app.get("/animal", (req, res) => {
-    // here's a sample select query
-    // pool.query(`SELECT * FROM animals WHERE name = $1`, ["Fluffy"]);
-    res.send();
-});
+
 
 
 app.get("/search", (req, res) =>{
@@ -35,6 +31,18 @@ app.get("/search", (req, res) =>{
          }); 
     }
 }); 
+
+app.post("/create", (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    if(username.length <= 15 && password.length >= 1){
+        pool.query(`INSERT INTO Users (username, password) VALUES ('${username}', '${password}')`);
+        console.log(req.body);
+    }   else {
+        res.status(400).json(res.status);
+    }
+});
 
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);
