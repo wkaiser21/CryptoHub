@@ -28,7 +28,9 @@ app.get("/search", (req, res) =>{
     }
     else{
         let reqcoin = req.query.coin; 
-        axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${reqcoin}/&vs_currencies=usd`).then((response) => {
+        axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${reqcoin}&vs_currencies=usd`)
+        .then((response) => {
+        console.log(Object.keys(response.data) + ' ' + response.data[reqcoin].usd);
         res.status(200).json(response.data); 
          }); 
     }
@@ -39,10 +41,6 @@ app.listen(port, hostname, () => {
 });
 
 
-/*
 
-WRITE YOUR ANSWERS HERE
-
-*/
 
 

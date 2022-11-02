@@ -2,7 +2,7 @@
 let searchButton = document.getElementById("submit"); 
 
 searchButton.addEventListener("click",() =>{
-    let selectedcoin = document.getElementById("Coins").options[document.getElementById("Coins").selectedIndex].value; 
+    let selectedcoin = document.getElementById("Coins").value;
     console.log("Selected Coin:" + selectedcoin); 
     let sendurl = "/search?coin="+selectedcoin; 
     console.log("Send URL:" + sendurl); 
@@ -22,12 +22,13 @@ searchButton.addEventListener("click",() =>{
             console.log("Error: "+ body.error); 
         }  
         else{
+            let coinPrice = body[selectedcoin].usd;
             let cointable = document.getElementById("results"); 
             let coinrow = document.createElement("tr");
             let coinselected = document.createElement("td")
             coinselected.textContent = selectedcoin 
             let coinvalue = document.createElement("td")
-            coinvalue.textContent = selectedcoin["usd"] //change to coin value
+            coinvalue.textContent = coinPrice;//selectedcoin["usd"] //change to coin value
             let timeof = document.createElement("td")
             timeof.textContent = dateTime //change to the time recived coin data
             coinrow.appendChild(coinselected);
