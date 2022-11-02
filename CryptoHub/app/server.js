@@ -1,12 +1,18 @@
-let axios = require("axios");
-let express = require("express");
-//let env = require("../env.json");
-let app = express();
-let port = 3000;
-let hostname = "localhost";
+const axios = require("axios");
+const express = require("express");
+const pg = require("pg");
+const env = require("../env.json");
+const app = express();
+const port = 3000;
+const hostname = "localhost";
+
+const Pool = pg.Pool;
+const pool = new Pool(env);
+pool.connect().then(function () {
+    console.log(`Connected to database ${env.database}`);
+});
 app.use(express.static("public"));
 app.use(express.json());
-let { Pool } = require("pg");
 
 
 // let pool = new Pool(env);
@@ -14,7 +20,9 @@ let { Pool } = require("pg");
 //     console.log("Connected to database");
 // });
 
-
+app.get("/" , (req, res) => {
+    res.redirect('http://localhost:3000/login.html');
+});
 
 
 app.get("/search", (req, res) =>{
@@ -35,13 +43,34 @@ app.get("/search", (req, res) =>{
 app.post("/create", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
-
+    console.log(username + ' ' + password);
     if(username.length <= 15 && password.length >= 1){
         pool.query(`INSERT INTO Users (username, password) VALUES ('${username}', '${password}')`);
         console.log(req.body);
     }   else {
         res.status(400).json(res.status);
     }
+});
+
+
+app.post("/login" , (req, res) => {
+    let username = req.body.username;
+    let enteredPassword = req.body.password;
+    pool.query(`SELECT * FROM users WHERE username = '${username}' and password = '${enteredPassword}'`)
+    .then((result) => {
+        console.log(result.rows)
+        if (result.rows.length === 0) {
+            console.log("Username or Password didn't match");
+            return res.status(401).send();
+        } else{
+            return res.status(200).send();
+        }
+
+    })
+    .catch((error) => {
+        console.log("select error " + error);
+        res.status(500).send();
+    });
 });
 
 app.listen(port, hostname, () => {
