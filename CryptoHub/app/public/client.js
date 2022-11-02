@@ -22,6 +22,7 @@ searchButton.addEventListener("click",() =>{
             console.log("Error: "+ body.error); 
         }  
         else{
+            let cointable = document.getElementById("results"); 
             let coinrow = document.createElement("tr");
             let coinselected = document.createElement("td")
             coinselected.textContent = selectedcoin 
@@ -32,7 +33,7 @@ searchButton.addEventListener("click",() =>{
             coinrow.appendChild(coinselected);
             coinrow.appendChild(coinvalue);
             coinrow.appendChild(timeof);
-            traintb.appendChild(coinrow);
+            cointable.appendChild(coinrow);
         } 
      })
 }); 
