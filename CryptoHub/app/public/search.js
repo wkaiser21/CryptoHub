@@ -12,8 +12,9 @@ searchButton.addEventListener("click",() =>{
     sendurl = "/search?coin="+selectedcoin; 
     console.log("Send URL:" + sendurl); 
 
-    //if(typeof(useramount) != )
+    
     console.log("type of " + typeof(useramount)); 
+    messageDiv.innerText = useramount; 
     
     fetch(sendurl).then((response) => {
         responsestat = response.status; 
