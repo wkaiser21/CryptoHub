@@ -73,6 +73,25 @@ app.post("/login" , (req, res) => {
     });
 });
 
+// app.post("/portfolio" , (req, res) => {
+//     let username = req.body.username;
+//     pool.query(`SELECT * FROM portfolios WHERE username = '${username}'`)
+//     .then((result) => {
+//         console.log(result.rows)
+//         if (result.rows.length === 0) {
+//             console.log("No portfolio found");
+//             return res.status(401).send();
+//         } else{
+//             return res.status(200).send();
+//         }
+
+//     })
+//     .catch((error) => {
+//         console.log("select error " + error);
+//         res.status(500).send();
+//     });
+// });
+
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);
 });
