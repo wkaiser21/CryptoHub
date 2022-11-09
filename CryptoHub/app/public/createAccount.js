@@ -18,7 +18,8 @@ function submitCreateAccount() {
             password: password.value,
         }),
     }).then(response => response.text())
-
+    //TODO error handling for 400, 401, 500
+    
     //message.insertAdjacentHTML('message', '<div>success</div>');
 }
 
