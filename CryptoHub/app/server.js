@@ -1,6 +1,7 @@
 const axios = require("axios");
 const express = require("express");
 const pg = require("pg");
+const bcrypt = require("bcrypt");
 const env = require("../env.json");
 const app = express();
 const port = 3000;
@@ -14,20 +15,19 @@ pool.connect().then(function () {
 app.use(express.static("public"));
 app.use(express.json());
 
-
+let salt = 5;
 // let pool = new Pool(env);
 // pool.connect().then(() => {
 //     console.log("Connected to database");
 // });
 
 app.get("/" , (req, res) => {
-    res.redirect('http://localhost:3000/login.html');
+    res.redirect('/login.html');
 });
 
 
 app.get("/search", (req, res) =>{
     if(!(req.query.hasOwnProperty("coin"))){
-       // console.log("test1"); 
          res.status(400).json({error: "Invalid origin or destination"});
     }
     else{
@@ -44,31 +44,61 @@ app.post("/create", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     console.log(username + ' ' + password);
-    if(username.length <= 15 && password.length >= 1){
-        pool.query(`INSERT INTO Users (username, password) VALUES ('${username}', '${password}')`);
+    if(typeof username != 'string' && username.length < 1 && username.length > 15 && password.length < 5 && password.length > 36){
+        res.status(400).send();
         console.log(req.body);
-    }   else {
-        res.status(400).json(res.status);
     }
+    pool.query(`SELECT * FROM users WHERE username = '${username}'`)
+    .then((result) => {
+        if (result.rows.length != 0) {
+            res.status(401).send();
+        }})
+
+    bcrypt
+        .hash(password, salt)
+        .then((hashedPassword) => {
+            pool.query(`INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`)
+                .then(() => {
+                    console.log(username, "account created");
+                    res.status(200).send();
+                })
+                .catch((error) => {
+                    console.log(error + "insert failed");
+                    res.status(500).send();
+                });
+        })
+        .catch((error) => {
+            console.log(error + "bcrypt failed");
+            res.status(500).send();
+        });    
 });
 
 
 app.post("/login" , (req, res) => {
     let username = req.body.username;
     let enteredPassword = req.body.password;
-    pool.query(`SELECT * FROM users WHERE username = '${username}' and password = '${enteredPassword}'`)
+    pool.query(`SELECT * FROM users WHERE username = '${username}'`)
     .then((result) => {
-        console.log(result.rows)
         if (result.rows.length === 0) {
-            console.log("Username or Password didn't match");
             return res.status(401).send();
-        } else{
-            return res.status(200).send();
         }
-
+        let hashedPassword = result.rows[0].password;
+        bcrypt
+            .compare(enteredPassword, hashedPassword)
+            .then((correctPassword) => {
+                if (correctPassword) {
+                    res.status(200).send();
+                } else {
+                    res.status(401).send();
+                }
+            })
+            .catch((error) => {
+                console.log(error + " bcrypt error");
+                res.status(500).send();
+            });
     })
     .catch((error) => {
-        console.log("select error " + error);
+        console.log(error + " select error");
         res.status(500).send();
     });
 });
