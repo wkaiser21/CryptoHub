@@ -35,8 +35,7 @@ app.get("/search", (req, res) =>{
         //axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${reqcoin}&vs_currencies=usd`)
         axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
         .then((response) => {
-        console.log(Object.keys(response.data) + ' ' + response.data[reqcoin].usd);
-        res.status(200).json(response.data); 
+        res.status(200).json({data: response.data[0]}); 
          }); 
     }
 }); 
