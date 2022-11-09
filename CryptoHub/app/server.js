@@ -21,7 +21,7 @@ app.use(express.json());
 // });
 
 app.get("/" , (req, res) => {
-    res.redirect('http://localhost:3000/login.html');
+    res.redirect('/login.html');
 });
 
 
