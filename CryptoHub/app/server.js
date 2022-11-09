@@ -105,7 +105,7 @@ app.post("/login" , (req, res) => {
 
 app.get("/portfolio", (req, res) => {
     let username = req.body.username;
-    pool.query(`SELECT * FROM portfolios WHERE username = $1`, [username]
+    pool.query(`SELECT * FROM portfolio WHERE username = $1`, [username]
         ).then((result) => {
             res.status(200);
             res.send({"rows":result.rows})
