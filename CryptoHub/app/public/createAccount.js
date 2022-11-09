@@ -3,11 +3,12 @@ let password = document.getElementById("password");
 let submit = document.getElementById("submit");
 let message = document.getElementById("message");
 
-submit.addEventListener("click", submitAdd);
+submit.addEventListener("click", submitCreateAccount);
 
-message.insertAdjacentHTML('message', '<div>success</div>');
-function submitAdd() {
-    fetch("/add", {
+
+function submitCreateAccount() {
+    
+    fetch("/create", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -18,7 +19,7 @@ function submitAdd() {
         }),
     }).then(response => response.text())
 
-    message.insertAdjacentHTML('message', '<div>success</div>');
+    //message.insertAdjacentHTML('message', '<div>success</div>');
 }
 
 
