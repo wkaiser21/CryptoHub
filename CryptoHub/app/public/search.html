@@ -24,37 +24,58 @@
 		<a href="portfolio.html">Portfolio</a>
 	</div>
 
-<p>Search for:</p>
-
-<div>
-	<label for="Coins">Coins:</label>
-	<select id="Coins" name="Coins">
-		<option value="">Select coin</option>
-		<option value="bitcoin">Bitcoin</option>
-		<option value="ethereum">Ethereum</option>
-		<option value="ripple">Ripple</option>
-		<option value="eos">Eos</option>
-	</select>
+<h2>Add to Portfolio</h2>
+<div class = "portadd">
+	<div>
+		<label for="addCoins">Coins:</label>
+		<select id="addCoins" name="addCoins">
+			<option value="">Select coin</option>
+			<option value="bitcoin">Bitcoin</option>
+			<option value="ethereum">Ethereum</option>
+			<option value="ripple">Ripple</option>
+			<option value="eos">Eos</option>
+		</select>
+	</div>
+	<div>
+		<label for="addamount">Amount:</label>
+		<input id="addamount" type="number" name="addamount">
+	</div>
+	<button id="addsubmit">Add</button>
 </div>
+
 <br>
-<div>
-	<label for="amount">Amount:</label>
-	<input id="amount" type="number" name="amount">
+<h2>Search for:</h2>
+
+<div class="tablesearch">
+	<div>
+		<label for="Coins">Coins:</label>
+		<select id="Coins" name="Coins">
+			<option value="">Select coin</option>
+			<option value="bitcoin">Bitcoin</option>
+			<option value="ethereum">Ethereum</option>
+			<option value="ripple">Ripple</option>
+			<option value="eos">Eos</option>
+		</select>
+	</div>
+	<br>
+	<div>
+		<label for="amount">Amount:</label>
+		<input id="amount" type="number" name="amount">
+	</div>
+	<br>
+	<div id="message"></div>
+	<br>
+	<button id="tablesubmit">Search</button>
+
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Value (USD)</th>
+			<th>Date/Time</th>
+		</tr>
+		<tbody id="results"></tbody>
+	</table>
 </div>
-<br>
-<div id="message"></div>
-<br>
-<button id="submit">Search</button>
-
-<table>
-	<tr>
-		<th>Name</th>
-		<th>Value (USD)</th>
-		<th>Date/Time</th>
-	</tr>
-	<tbody id="results"></tbody>
-</table>
-
 <script src="search.js"></script>
 
 </body>
