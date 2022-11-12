@@ -16,10 +16,6 @@ app.use(express.static("public"));
 app.use(express.json());
 
 let salt = 5;
-// let pool = new Pool(env);
-// pool.connect().then(() => {
-//     console.log("Connected to database");
-// });
 
 app.get("/" , (req, res) => {
     res.redirect('/login.html');
