@@ -44,7 +44,7 @@ app.post("/create", (req, res) => {
         res.status(400).send();
         console.log(req.body);
     }
-    pool.query(`SELECT * FROM users WHERE username = '${username}'`)
+    pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length != 0) {
             res.status(401).send();
@@ -53,7 +53,7 @@ app.post("/create", (req, res) => {
     bcrypt
         .hash(password, salt)
         .then((hashedPassword) => {
-            pool.query(`INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`)
+            pool.query(`INSERT INTO users (username, password) VALUES ($1, $2)`, [username, hashedPassword])
                 .then(() => {
                     console.log(username, "account created");
                     res.status(200).send();
@@ -73,7 +73,7 @@ app.post("/create", (req, res) => {
 app.post("/login" , (req, res) => {
     let username = req.body.username;
     let enteredPassword = req.body.password;
-    pool.query(`SELECT * FROM users WHERE username = '${username}'`)
+    pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length === 0) {
             return res.status(401).send();
