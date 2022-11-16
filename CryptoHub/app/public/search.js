@@ -1,9 +1,21 @@
 //all things for portfolio add
+let addCoinButton = document.getElementById("addsubmit");
+
+addCoinButton.addEventListener("click", () => {
+    // let username = ;
+    let coinSelected = document.getElementById("addCoins");
+    let coinAmount = document.getElementById("addamount");
+    // let coinValue = ;
+    // let dateAdded = ;
+
+    // make fetch here that sends the data to server 
+    
+})
 
 // all things for table search 
 let TablesearchButton = document.getElementById("tablesubmit"); 
 
-TablesearchButton.addEventListener("click",() =>{
+TablesearchButton.addEventListener("click", () =>{
     let selectedcoin = document.getElementById("Coins").value;
     let useramount = document.getElementById("amount"); 
     let messageDiv = document.getElementById("message"); 

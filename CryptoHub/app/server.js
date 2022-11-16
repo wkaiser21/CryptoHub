@@ -99,7 +99,7 @@ app.post("/login" , (req, res) => {
     });
 });
 
-app.get("/portfolio", (req, res) => {
+app.post("/portfolio", (req, res) => {
     let username = req.body.username;
     pool.query(`SELECT * FROM portfolio WHERE username = $1`, [username]
         ).then((result) => {
@@ -112,6 +112,8 @@ app.get("/portfolio", (req, res) => {
             res.send();
         });
 });
+
+//make new handler for adding to portfolio table
 
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);
