@@ -1,16 +1,47 @@
 //all things for portfolio add
 let addCoinButton = document.getElementById("addsubmit");
+var currentPrice;
 
 addCoinButton.addEventListener("click", () => {
-    // let username = ;
-    let coinSelected = document.getElementById("addCoins");
+    let username = document.cookie.split("=")[1];
+    let portfolio = document.getElementById("pickPortfolio");
+    let coinSelected = document.getElementById("addCoins").value;
     let coinAmount = document.getElementById("addamount");
-    // let coinValue = ;
-    // let dateAdded = ;
 
-    // make fetch here that sends the data to server 
-    
-})
+    sendurl = "/search?coin="+coinSelected; 
+
+    fetch(sendurl)
+        .then(res => res.json())
+        .then(body => { 
+            currentPrice = body.data["current_price"];
+            console.log("Live Price Inside Fetch: " + currentPrice);
+
+        fetch("/addToPortfolio", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                portfolio: portfolio.value,
+                coin: coinSelected,
+                amount: coinAmount.value,
+                value: currentPrice
+            }),
+        })
+        .then(response => response)
+        .then(body => { 
+            console.log(body.status);
+            if(body.status === 400) {
+                addMessage.innerText = "400 Error"
+            }
+            if(body.status === 200) {
+            addMessage.innerText = "Added to portfolio successfully" }
+            }).catch((error) => {
+            console.log(error);
+        });
+        })
+});
 
 // all things for table search 
 let TablesearchButton = document.getElementById("tablesubmit"); 

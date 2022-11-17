@@ -27,7 +27,15 @@
 <h2>Add to Portfolio</h2>
 <div class = "portadd">
 	<div>
-		<label for="addCoins">Coins:</label>
+		<label for="pickPortfolio">Portfolio:</label>
+		<select id="pickPortfolio" name="pickPortfolio">
+			<option value="">Select Portfolio</option>
+			<option value="Portfolio1">Portfolio 1</option>
+			<option value="Portfolio2">Portfolio 2</option>
+		</select>
+	</div>
+	<div>
+		<label for="addCoins">Coin:</label>
 		<select id="addCoins" name="addCoins">
 			<option value="">Select coin</option>
 			<option value="bitcoin">Bitcoin</option>
@@ -42,6 +50,8 @@
 	</div>
 	<button id="addsubmit">Add</button>
 </div>
+
+<div id="addMessage"></div>
 
 <br>
 <h2>Search for:</h2>
