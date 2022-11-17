@@ -1,15 +1,20 @@
 let table = document.getElementById("portfolioTable");
 
-// fetch(, {
-// }).then(response => response)
-// .then(body => { 
-//     console.log(body.status);
-//     if (body.status === 401) {
-//         message.textContent = "No portfolios"
-//     } 
-//     if (body.status === 200) {
-//         message.textContent = "Portfolio(s) found" 
-//     }
-//     }).catch((error) => {
-//     console.log(error);
-// });
+fetch("/portfolio", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        // username: usernameInput.value,
+        // plaintextPassword: passwordInput.value,
+    })
+}).then((response) => {
+    if (response.status === 200) {
+        console.log("Portfolio(s) found");
+        
+        
+    } else {
+        console.log("No portfolios found");
+    }
+});
