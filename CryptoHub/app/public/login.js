@@ -1,10 +1,12 @@
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 let login = document.getElementById("login");
+let logout = document.getElementById("logout");
 let message = document.getElementById("message");
+let logoutMessage = document.getElementById("logoutMessage");
 
 login.addEventListener("click", submitLogin);
-
+logout.addEventListener("click", submitLogout);
 
 function submitLogin() {
     
@@ -30,4 +32,12 @@ function submitLogin() {
 }
 
 
-
+function submitLogout() {
+    fetch("/logout", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    logoutMessage.innerText = "Logged out successfully"
+}
