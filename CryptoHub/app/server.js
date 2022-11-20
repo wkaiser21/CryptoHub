@@ -37,7 +37,6 @@ app.get("/search", (req, res) =>{
     }
 }); 
 
-
 app.post("/addToPortfolio", (req, res) => {
     let username = req.body.username;
     let portfolio = req.body.portfolio;
@@ -59,10 +58,30 @@ app.post("/addToPortfolio", (req, res) => {
             console.log(error + "Insert failed");
             res.status(500).send();
         });
-  
+
+    if (portfolio === "Portfolio1") {
+        pool.query(`INSERT INTO portfolio1 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
+        .then(() => {
+            console.log(username, "Inserted Successfully to portfolio 1");
+            res.status(200).send();
+        })
+        .catch((error) => {
+            console.log(error + "Insert failed");
+            res.status(500).send();
+        });
+    }
+    else if (portfolio === "Portfolio2") {
+        pool.query(`INSERT INTO portfolio2 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
+        .then(() => {
+            console.log(username, "Inserted Successfully to portfolio 2");
+            res.status(200).send();
+        })
+        .catch((error) => {
+            console.log(error + "Insert failed");
+            res.status(500).send();
+        });
+    }
 });
-
-
 
 app.post("/create", (req, res) => {
     let username = req.body.username;
@@ -96,7 +115,6 @@ app.post("/create", (req, res) => {
             res.status(500).send();
         });    
 });
-
 
 app.post("/login" , (req, res) => {
     let username = req.body.username;
@@ -134,8 +152,6 @@ app.get("/logout", (req,res) => {
     res.redirect("/login.html");
 })
 
-
-
 app.post("/portfolio", (req, res) => {
     let loggedInUser = req.cookies.username;
     if (loggedInUser) {
@@ -155,13 +171,6 @@ app.post("/portfolio", (req, res) => {
         });
 });
 
-//make new handler for adding to portfolio table
-
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);
 });
-
-
-
-
-
