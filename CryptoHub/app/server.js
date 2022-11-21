@@ -22,7 +22,7 @@ app.get("/" , (req, res) => {
     res.redirect('/login.html');
 });
 
-app.get("/search", (req, res) =>{
+app.get("/tablesearch", (req, res) =>{
     if(!(req.query.hasOwnProperty("coin"))){
          res.status(400).json({error: "Invalid origin or destination"});
     }
@@ -30,6 +30,24 @@ app.get("/search", (req, res) =>{
         let reqcoin = req.query.coin; 
         //axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${reqcoin}&vs_currencies=usd`)
         axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
+        .then((response) => {
+            //console.log(response.data);
+        res.status(200).json({data: response.data[0]}); 
+         }); 
+    }
+}); 
+
+app.get("/graphsearch", (req, res) =>{
+   if(!(req.query.hasOwnProperty("coin"))){
+         res.status(400).json({error: "Invalid origin or destination"});
+    }
+    else{
+        let reqcoin = req.query.coin; 
+        let reqfrom = req.query.from; 
+        let reqto = req.query.to; 
+        //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
+        //axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
+        axios.get(`https://api.coingecko.com/api/v3/coins/${reqcoin}/market_chart/range?vs_currency=usd&from=${reqfrom}&to=${reqto}`)
         .then((response) => {
             //console.log(response.data);
         res.status(200).json({data: response.data[0]}); 

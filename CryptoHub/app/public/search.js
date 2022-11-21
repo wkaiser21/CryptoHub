@@ -8,7 +8,7 @@ addCoinButton.addEventListener("click", () => {
     let coinSelected = document.getElementById("addCoins").value;
     let coinAmount = document.getElementById("addamount");
 
-    sendurl = "/search?coin="+coinSelected; 
+    sendurl = "/tablesearch?coin="+coinSelected; 
 
     fetch(sendurl)
         .then(res => res.json())
@@ -47,22 +47,22 @@ addCoinButton.addEventListener("click", () => {
 let TablesearchButton = document.getElementById("tablesubmit"); 
 
 TablesearchButton.addEventListener("click", () =>{
-    let selectedcoin = document.getElementById("Coins").value;
-    let useramount = document.getElementById("amount"); 
-    let messageDiv = document.getElementById("message"); 
-    let responsestat; 
-    let sendurl; 
+    let selectedcointable = document.getElementById("tableCoins").value;
+    let messageDiv = document.getElementById("tablemessage"); 
+    let useramount = document.getElementById("amount");
+    let tableresponsestat; 
+    let tablesendurl; 
 
-    console.log("Selected Coin:" + selectedcoin); 
-    sendurl = "/search?coin="+selectedcoin; 
-    console.log("Send URL:" + sendurl); 
+    console.log("Selected Coin:" + selectedcointable); 
+    tablesendurl = "/tablesearch?coin="+selectedcointable; 
+    console.log("Send URL:" + tablesendurl); 
 
     
     console.log("type of " + typeof(useramount)); 
     messageDiv.innerText = useramount; 
     
-    fetch(sendurl).then((response) => {
-        responsestat = response.status; 
+    fetch(tablesendurl).then((response) => {
+        tableresponsestat = response.status; 
         return response.json(); 
     }).then((body) => {
 
@@ -71,7 +71,7 @@ TablesearchButton.addEventListener("click", () =>{
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date+' '+time;
 
-        if(responsestat != 200){
+        if(tableresponsestat != 200){
             console.log("Error: ", body.error); 
         }  
         else{
@@ -101,4 +101,35 @@ TablesearchButton.addEventListener("click", () =>{
      })
 }); 
 
+
+//graph search stuff. 
+let GraphsearchButton = document.getElementById("graphsubmit"); 
+
+GraphsearchButton.addEventListener("click", () =>{
+    let selectedcoingraph = document.getElementById("graphCoins").value;
+    let SelectedGraphTime = document.getElementById("graphtime").value;
+    let Display = document.getElementById('DisplayGraph');
+    let graphfromdate; //add today UTC day 
+    let graphtodate; //do the utc math with selectedgraphtime 
+    let graphsendurl = "/tablesearch?coin=" + selectedcoingraph;
+    let graphresponsestat; 
+    
+    Plotly.newPlot( Display, [{
+        x: [1, 2, 3, 4, 5],
+        y: [1, 2, 4, 8, 16] }], {
+        margin: { t: 0 } } ); 
+
+
+   //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
+
+   //finish the fetch
+   /*
+   fetch(graphsendurl).then((response) => {
+    graphresponsestat = response.status; 
+    return response.json(); 
+    }).then((body) => {}); 
+    */
+
+
+    }); 
 

@@ -12,6 +12,7 @@
 			padding: 10px;
 		}
 	</style>
+	 <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
 </head>
 <body>
 	<div>
@@ -24,7 +25,7 @@
 		<a href="portfolio.html">Portfolio</a>
 	</div>
 
-<h2>Add to Portfolio</h2>
+<h3>Add to Portfolio</h3>
 <div class = "portadd">
 	<div>
 		<label for="pickPortfolio">Portfolio:</label>
@@ -54,12 +55,12 @@
 <div id="addMessage"></div>
 
 <br>
-<h2>Search for:</h2>
+<h3>Information Search:</h3>
 
 <div class="tablesearch">
 	<div>
-		<label for="Coins">Coins:</label>
-		<select id="Coins" name="Coins">
+		<label for="tableCoins">Coins:</label>
+		<select id="tableCoins" name="tableCoins">
 			<option value="">Select coin</option>
 			<option value="bitcoin">Bitcoin</option>
 			<option value="ethereum">Ethereum</option>
@@ -68,7 +69,7 @@
 		</select>
 	</div>
 
-	<div id="message"></div>
+	<div id="tablemessage"></div>
 	<br>
 	<button id="tablesubmit">Search</button>
 
@@ -84,6 +85,42 @@
 		<tbody id="results"></tbody>
 	</table>
 </div>
+
+<br>
+<h3>Graph Search:</h3>
+
+<div class="graphsearch">
+	<div>
+		<label for="graphCoins">Coins:</label>
+		<select id="graphCoins" name="graphCoins">
+			<option value="">Select coin</option>
+			<option value="bitcoin">Bitcoin</option>
+			<option value="ethereum">Ethereum</option>
+			<option value="ripple">Ripple</option>
+			<option value="eos">Eos</option>
+		</select>
+	</div>
+	<div>
+		<label for="graphtime">Time Range:</label>
+		<select id="graphtime" name="graphtime">
+			<option value="">Select Range</option>
+			<option value="1">1 Week</option>
+			<option value="2">2 Weeks</option>
+			<option value="4">1 Month</option>
+			<option value="12">3 Months</option>
+			<option value="24">6 Months</option>
+			<option value="52">1 Year</option>
+			<option value="156">3 Year</option>
+			<option value="260">5 Year</option>
+		</select>
+	</div>
+
+	<button id="graphsubmit">Search</button>
+	<br>
+	<div id="DisplayGraph" style="width:600px;height:250px;margin:20px;"></div>
+
+</div>
+
 <script src="search.js"></script>
 
 </body>
