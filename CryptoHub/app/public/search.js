@@ -109,26 +109,41 @@ GraphsearchButton.addEventListener("click", () =>{
     let selectedcoingraph = document.getElementById("graphCoins").value;
     let SelectedGraphTime = document.getElementById("graphtime").value;
     let Display = document.getElementById('DisplayGraph');
-    let graphfromdate; //add today UTC day 
-    let graphtodate; //do the utc math with selectedgraphtime 
-    let graphsendurl = "/tablesearch?coin=" + selectedcoingraph;
+    let graphtodate = Date.now(); //add today UTC day 
+    let graphfromdate = graphtodate - SelectedGraphTime; //do the utc math with selectedgraphtime 
+    console.log("FROM DATE: ", graphfromdate); 
+    console.log("TO DATE: ", graphtodate); 
+    let graphsendurl = "/tablesearch?coin=" + selectedcoingraph + "?from=" + graphfromdate + "?to=" + graphtodate;
+    console.log("SEND URL", graphsendurl); 
     let graphresponsestat; 
+    let xaxis; 
+    let yaxis; 
     
-    Plotly.newPlot( Display, [{
-        x: [1, 2, 3, 4, 5],
-        y: [1, 2, 4, 8, 16] }], {
-        margin: { t: 0 } } ); 
+
 
 
    //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
 
    //finish the fetch
-   /*
    fetch(graphsendurl).then((response) => {
     graphresponsestat = response.status; 
     return response.json(); 
-    }).then((body) => {}); 
-    */
+    }).then((body) => {
+        if(graphresponsestat != 200){
+            console.log("Error: ", body.error); 
+        }
+        else{
+            console.log("BODY STUFF: ", body.data); 
+            //do axis stuff 
+            Plotly.newPlot( Display, [{
+                x: [1, 2, 3, 4, 5],
+                y: [1, 2, 4, 8, 16] }], {
+                margin: { t: 0 } } ); 
+
+        }
+
+
+    }); 
 
 
     }); 
