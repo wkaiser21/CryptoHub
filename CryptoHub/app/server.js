@@ -45,12 +45,13 @@ app.get("/graphsearch", (req, res) =>{
         let reqcoin = req.query.coin; 
         let reqfrom = req.query.from; 
         let reqto = req.query.to; 
+        console.log(req.query); 
         //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
         //axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
         axios.get(`https://api.coingecko.com/api/v3/coins/${reqcoin}/market_chart/range?vs_currency=usd&from=${reqfrom}&to=${reqto}`)
         .then((response) => {
             //console.log(response.data);
-        res.status(200).json({data: response.data[0]}); 
+        res.status(200).json({data: response.data}); 
          }); 
     }
 }); 

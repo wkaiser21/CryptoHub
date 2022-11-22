@@ -109,15 +109,15 @@ GraphsearchButton.addEventListener("click", () =>{
     let selectedcoingraph = document.getElementById("graphCoins").value;
     let SelectedGraphTime = document.getElementById("graphtime").value;
     let Display = document.getElementById('DisplayGraph');
-    let graphtodate = Date.now(); //add today UTC day 
+    let graphtodate = Math.floor(Date.now()/1000); //add today UTC day 
     let graphfromdate = graphtodate - SelectedGraphTime; //do the utc math with selectedgraphtime 
     console.log("FROM DATE: ", graphfromdate); 
     console.log("TO DATE: ", graphtodate); 
-    let graphsendurl = "/tablesearch?coin=" + selectedcoingraph + "?from=" + graphfromdate + "?to=" + graphtodate;
+    let graphsendurl = "/graphsearch?coin=" + selectedcoingraph + "&from=" + graphfromdate + "&to=" + graphtodate;
     console.log("SEND URL", graphsendurl); 
     let graphresponsestat; 
-    let xaxis; 
-    let yaxis; 
+    let xaxis = []; 
+    let yaxis = []; 
     
 
 
@@ -133,11 +133,26 @@ GraphsearchButton.addEventListener("click", () =>{
             console.log("Error: ", body.error); 
         }
         else{
-            console.log("BODY STUFF: ", body.data); 
+            console.log("BODY STUFF: ", body.data.prices); 
+            let returnprices = body.data.prices; 
             //do axis stuff 
+            for( let item = 0; item < returnprices.length; item++ ){
+                xaxis.push(returnprices[item][0]); 
+                yaxis.push(returnprices[item][1]); 
+            }
+            console.log("x axis ", xaxis); 
+            console.log()
+            console.log()
+            console.log("y axis ", yaxis); 
+            /*
             Plotly.newPlot( Display, [{
                 x: [1, 2, 3, 4, 5],
                 y: [1, 2, 4, 8, 16] }], {
+                margin: { t: 0 } } ); */
+            
+            Plotly.newPlot( Display, [{
+                x: xaxis,
+                y: yaxis }], {
                 margin: { t: 0 } } ); 
 
         }
