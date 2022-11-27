@@ -137,13 +137,13 @@ GraphsearchButton.addEventListener("click", () =>{
             let returnprices = body.data.prices; 
             //do axis stuff 
             for( let item = 0; item < returnprices.length; item++ ){
-                xaxis.push(returnprices[item][0]); 
+                xaxis.push(new Date(returnprices[item][0])); 
                 yaxis.push(returnprices[item][1]); 
             }
-            console.log("x axis ", xaxis); 
-            console.log()
-            console.log()
-            console.log("y axis ", yaxis); 
+            // console.log("x axis ", xaxis); 
+            // console.log()
+            // console.log()
+            // console.log("y axis ", yaxis); 
             /*
             Plotly.newPlot( Display, [{
                 x: [1, 2, 3, 4, 5],
@@ -153,7 +153,7 @@ GraphsearchButton.addEventListener("click", () =>{
             Plotly.newPlot( Display, [{
                 x: xaxis,
                 y: yaxis }], {
-                margin: { t: 0 } } ); 
+                margin: { t: 0 }, xaxis : {title : {text: "Time"}},  yaxis : {title : {text: "Value (USD)"}} } ); 
 
         }
 
