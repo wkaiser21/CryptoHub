@@ -28,7 +28,6 @@ app.get("/tablesearch", (req, res) =>{
     }
     else{
         let reqcoin = req.query.coin; 
-        //axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${reqcoin}&vs_currencies=usd`)
         axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
         .then((response) => {
             //console.log(response.data);
@@ -46,12 +45,10 @@ app.get("/graphsearch", (req, res) =>{
         let reqfrom = req.query.from; 
         let reqto = req.query.to; 
         console.log(req.query); 
-        //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
-        //axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
         axios.get(`https://api.coingecko.com/api/v3/coins/${reqcoin}/market_chart/range?vs_currency=usd&from=${reqfrom}&to=${reqto}`)
         .then((response) => {
             //console.log(response.data);
-        res.status(200).json({data: response.data}); 
+            res.status(200).json({data: response.data}); 
          }); 
     }
 }); 
@@ -189,6 +186,40 @@ app.post("/portfolio", (req, res) => {
             res.send();
         });
 });
+
+app.get("/portfolioinfo", (req, res) =>{
+    if(!(req.query.hasOwnProperty("coin")) && !(req.query.hasOwnProperty("portfolio")) ){
+          res.status(400).json({error: "Invalid coin or portfolio"});
+     }
+     else{
+         let reqcoin = req.query.coin; 
+         let reqport = req.query.portfolio; 
+         console.log(req.query); 
+        if(reqport == "PortfolioTotal"){ //For total portfolio value
+            if(reqcoin == "allcoins"){
+                //do query for all portfolios and all coins 
+            }
+            else{
+                //do query for all portfolios and specific coin
+            }
+        }
+        else{//For indivual portfolio value
+            if(reqcoin == "allcoins"){
+                //do query for specific portfolios and all coins 
+            }
+            else{
+                //do query for specific portfolios and specific coin
+            }
+
+        }
+
+        //  pool.query()  /// ADD QUERY LINE 
+        //  .then((response) => {
+        //      //console.log(response.data);
+        //      res.status(200).json({data: response.data}); 
+        //   }); 
+     }
+ }); 
 
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);

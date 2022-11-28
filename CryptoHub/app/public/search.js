@@ -118,13 +118,8 @@ GraphsearchButton.addEventListener("click", () =>{
     let graphresponsestat; 
     let xaxis = []; 
     let yaxis = []; 
-    
-
-
 
    //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
-
-   //finish the fetch
    fetch(graphsendurl).then((response) => {
     graphresponsestat = response.status; 
     return response.json(); 

@@ -17,6 +17,7 @@
 	<a href="portfolio.html">Portfolio</a>
 </div>
 <body>
+
     <div>
         <h1 id="pName">Portfolio</h1>
         <table>
@@ -24,6 +25,28 @@
 
             </tbody>
         </table>
+    </div>
+
+    <div id="PortChart" class="PortChart">
+        <h2>Portfolio Charting</h2>
+        <label for="pickPortfolio">Portfolio:</label>
+		<select id="pickPortfolio" name="pickPortfolio">
+			<option value="">Select Portfolio</option>
+            <option value="PortfolioTotal">All Portfolios</option>
+			<option value="Portfolio1">Portfolio 1</option>
+			<option value="Portfolio2">Portfolio 2</option>
+		</select>
+        <label for="ChartCoins">Coins:</label>
+		<select id="ChartCoins" name="ChartCoins">
+			<option value="">Select coin</option>
+            <option value="allcoins">Check All Coins</option>
+			<option value="bitcoin">Bitcoin</option>
+			<option value="ethereum">Ethereum</option>
+			<option value="ripple">Ripple</option>
+			<option value="eos">Eos</option>
+		</select>
+        <button id="graphsubmit">Search</button>
+        <div id="DisplayGraph" style="width:800px;height:350px;margin:20px;"></div>
     </div>
 </body>
 <script src="portfolio.js"></script>

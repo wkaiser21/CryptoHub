@@ -34,8 +34,8 @@
 			<option value="Portfolio1">Portfolio 1</option>
 			<option value="Portfolio2">Portfolio 2</option>
 		</select>
-	</div>
-	<div>
+	
+
 		<label for="addCoins">Coin:</label>
 		<select id="addCoins" name="addCoins">
 			<option value="">Select coin</option>
@@ -48,8 +48,9 @@
 	<div>
 		<label for="addamount">Amount:</label>
 		<input id="addamount" type="number" name="addamount">
+		<button id="addsubmit">Add</button>
 	</div>
-	<button id="addsubmit">Add</button>
+	
 </div>
 
 <div id="addMessage"></div>
@@ -58,7 +59,6 @@
 <h3>Information Search:</h3>
 
 <div class="tablesearch">
-	<div>
 		<label for="tableCoins">Coins:</label>
 		<select id="tableCoins" name="tableCoins">
 			<option value="">Select coin</option>
@@ -67,11 +67,10 @@
 			<option value="ripple">Ripple</option>
 			<option value="eos">Eos</option>
 		</select>
-	</div>
-
-	<div id="tablemessage"></div>
-	<br>
-	<button id="tablesubmit">Search</button>
+	
+		<button id="tablesubmit">Search</button>
+		<div id="tablemessage"></div>
+	
 
 	<table>
 		<tr>
@@ -90,7 +89,7 @@
 <h3>Graph Search:</h3>
 
 <div class="graphsearch">
-	<div>
+	
 		<label for="graphCoins">Coins:</label>
 		<select id="graphCoins" name="graphCoins">
 			<option value="">Select coin</option>
@@ -99,8 +98,7 @@
 			<option value="ripple">Ripple</option>
 			<option value="eos">Eos</option>
 		</select>
-	</div>
-	<div>
+
 		<label for="graphtime">Time Range:</label>
 		<select id="graphtime" name="graphtime">
 			<option value="">Select Range</option>
@@ -113,11 +111,10 @@
 			<option value="94348800">3 Year</option>
 			<option value="157248000">5 Year</option>
 		</select>
-	</div>
 
-	<button id="graphsubmit">Search</button>
-	<br>
-	<div id="DisplayGraph" style="width:600px;height:250px;margin:20px;"></div>
+		<button id="graphsubmit">Search</button>
+		<br>
+		<div id="DisplayGraph" style="width:800px;height:350px;margin:20px;"></div>
 
 </div>
 
