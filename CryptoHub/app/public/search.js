@@ -36,7 +36,9 @@ addCoinButton.addEventListener("click", () => {
                 addMessage.innerText = "400 Error"
             }
             if(body.status === 200) {
-            addMessage.innerText = "Added to portfolio successfully" }
+            addMessage.innerText = "Added to portfolio successfully" 
+            coinAmount.value = "";
+            }
             }).catch((error) => {
             console.log(error);
         });
