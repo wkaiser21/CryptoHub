@@ -77,28 +77,19 @@ TablesearchButton.addEventListener("click", () =>{
             console.log("Error: ", body.error); 
         }  
         else{
-            console.log("BODY STUFF: ", body.data); 
-            let cointable = document.getElementById("results"); 
-            let coinrow = document.createElement("tr");
-            let coinselected = document.createElement("td");
+            console.log("BODY STUFF: ", body.data);  
+            let coinselected = document.getElementById("coin_name_td");
             coinselected.textContent = body.data["name"];
-            let coinvalue = document.createElement("td");
+            let coinvalue = document.getElementById("value_td");
             coinvalue.textContent = "$"+body.data["current_price"];//change to coin value
-            let mktcapval = document.createElement("td");
+            let mktcapval = document.getElementById("market_cap_td");
             mktcapval.textContent = "$"+body.data["market_cap"];
-            let m24hval = document.createElement("td");
+            let m24hval = document.getElementById("24_hr_high_td");
             m24hval.textContent = "$"+body.data["high_24h"];
-            let m24lval = document.createElement("td");
+            let m24lval = document.getElementById("24_hr_low_td");
             m24lval.textContent = "$"+body.data["low_24h"];
-            let timeof = document.createElement("td");
+            let timeof = document.getElementById("date_time_td");
             timeof.textContent = dateTime //change to the time recived coin data
-            coinrow.appendChild(coinselected);
-            coinrow.appendChild(coinvalue);
-            coinrow.appendChild(mktcapval);
-            coinrow.appendChild(m24hval);
-            coinrow.appendChild(m24lval);
-            coinrow.appendChild(timeof);
-            cointable.appendChild(coinrow);
         } 
      })
 }); 
