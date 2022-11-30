@@ -221,6 +221,25 @@ app.get("/portfolioinfo", (req, res) =>{
      }
  }); 
 
+app.post("/account", (req, res) => {
+let loggedInUser = req.cookies.username;
+if (loggedInUser) {
+    console.log(loggedInUser);
+}
+pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE username = $1`, [loggedInUser]
+    ).then((result) => {
+        data = result.rows[0].sum;
+        console.log("account value is: ", data);
+        res.status(200);
+        res.send(data);
+    })
+    .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        res.send();
+    });
+});
+
 app.listen(port, hostname, () => {
     console.log(`http://${hostname}:${port}`);
 });
