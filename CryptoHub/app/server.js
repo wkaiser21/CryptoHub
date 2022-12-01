@@ -221,7 +221,7 @@ app.get("/portfolioinfo", (req, res) =>{
      }
  }); 
 
-app.post("/account", (req, res) => {
+app.post("/account", async (req, res) => {
 let loggedInUser = req.cookies.username;
 if (loggedInUser) {
     console.log(loggedInUser);
@@ -238,6 +238,29 @@ pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE username = $1`, [log
         console.log(error);
         res.send();
     });
+
+    let bitValue = await pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'bitcoin' and username = $1`, [loggedInUser]
+    )
+    bitData = bitValue.rows[0].sum;
+    console.log("bitcoin account value is: ", bitData);
+    
+
+
+    let ethValue = await pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ethereum' and username = $1`, [loggedInUser]
+    )
+    ethData = ethValue.rows[0].sum;
+    console.log("ethereum account value is: ", ethData);
+    
+    let ripValue = await pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ripple' and username = $1`, [loggedInUser]
+    )
+    ripData = ripValue.rows[0].sum;
+    console.log("ripple account value is: ", ripData);
+    
+    let eosValue = await pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'eos' and username = $1`, [loggedInUser]
+    )
+    eosData = eosValue.rows[0].sum;
+    console.log("eos account value is: ", eosData);
+
 });
 
 app.listen(port, hostname, () => {
