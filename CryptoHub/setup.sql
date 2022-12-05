@@ -10,7 +10,7 @@ CREATE TABLE portfolio (
 	username VARCHAR(25),
 	portfolio CHAR(25),
 	coin CHAR(10),
-	amount INT,
+	amount DECIMAL,
 	value DECIMAL(10,2),
 	date TIMESTAMP
 );
