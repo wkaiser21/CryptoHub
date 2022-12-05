@@ -89,30 +89,6 @@ app.post("/addToPortfolio", (req, res) => {
                     res.status(500).send();
                 });
         }})    
-    
-
-    if (portfolio === "Portfolio1") {
-        pool.query(`INSERT INTO portfolio1 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
-        .then(() => {
-            console.log(username, "Inserted Successfully to portfolio 1");
-            res.status(200).send();
-        })
-        .catch((error) => {
-            console.log(error + "Insert failed");
-            res.status(500).send();
-        });
-    }
-    else if (portfolio === "Portfolio2") {
-        pool.query(`INSERT INTO portfolio2 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
-        .then(() => {
-            console.log(username, "Inserted Successfully to portfolio 2");
-            res.status(200).send();
-        })
-        .catch((error) => {
-            console.log(error + "Insert failed");
-            res.status(500).send();
-        });
-    }
 });
 
 app.post("/removeFromPortfolio", (req, res) => {
@@ -131,40 +107,16 @@ app.post("/removeFromPortfolio", (req, res) => {
     pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length != 0) {
-            pool.query(`INSERT INTO runningportfolio (username, portfolio, coin, amount) VALUES ($1, $2, $3, $4)`, [username, portfolio, coin, amount])
+            pool.query(`UPDATE runningportfolio SET amount = (amount - $1) WHERE coin  = $2 and  portfolio = $3`, [amount, coin, portfolio])
                 .then(() => {
-                    console.log(username, "Inserted Successfully Into runningportfolio");
+                    console.log(username, "Removed successfully from runningportfolio");
                     res.status(200).send();
                 })
                 .catch((error) => {
-                    console.log(error + "Insert failed");
+                    console.log(error + "Remove failed");
                     res.status(500).send();
                 });
         }})    
-    
-
-    if (portfolio === "Portfolio1") {
-        pool.query(`INSERT INTO portfolio1 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
-        .then(() => {
-            console.log(username, "Inserted Successfully to portfolio 1");
-            res.status(200).send();
-        })
-        .catch((error) => {
-            console.log(error + "Insert failed");
-            res.status(500).send();
-        });
-    }
-    else if (portfolio === "Portfolio2") {
-        pool.query(`INSERT INTO portfolio2 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
-        .then(() => {
-            console.log(username, "Inserted Successfully to portfolio 2");
-            res.status(200).send();
-        })
-        .catch((error) => {
-            console.log(error + "Insert failed");
-            res.status(500).send();
-        });
-    }
 });
 
 app.post("/create", (req, res) => {
