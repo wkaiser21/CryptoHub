@@ -222,7 +222,8 @@ GraphsearchButton.addEventListener("click", () =>{
               var layout = {
                 title: 'Historic Values',
                 yaxis: {title: 'Value (USD)'},
-                xaxis: {title: 'TIme'}
+                xaxis: {title: 'Time'}, 
+               // margin: { t: 0 }
               };
               
               Plotly.newPlot(Display, data, layout);
