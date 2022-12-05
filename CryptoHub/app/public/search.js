@@ -82,11 +82,15 @@ function updatetablefunct(){
                 let m24hval = document.createElement('td'); 
                 let m24lval = document.createElement('td'); 
                 let timeof = document.createElement('td'); 
+                let coinvaluefromapi = body.data["current_price"];
+                let mktcapvalfromapi = body.data["market_cap"];
+                let m24hvalfromapi = body.data["high_24h"];
+                let m24lvalfromapi = body.data["low_24h"];
                 coinselected.textContent = body.data["name"];
-                coinvalue.textContent = "$"+body.data["current_price"];
-                mktcapval.textContent = "$"+body.data["market_cap"];
-                m24hval.textContent = "$"+body.data["high_24h"];
-                m24lval.textContent = "$"+body.data["low_24h"];
+                coinvalue.textContent = "$"+coinvaluefromapi.toLocaleString();
+                mktcapval.textContent = "$"+mktcapvalfromapi.toLocaleString();
+                m24hval.textContent = "$"+m24hvalfromapi.toLocaleString();
+                m24lval.textContent = "$"+m24lvalfromapi.toLocaleString();
                 timeof.textContent = dateTime 
                 tr.appendChild(coinselected);
                 tr.appendChild(coinvalue);
