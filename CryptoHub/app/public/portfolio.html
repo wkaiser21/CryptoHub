@@ -24,7 +24,33 @@
             </tbody>
         </table>
     </div>
+    <br>
+    <h3>Remove From Portfolio</h3>
+    <div class = "portremove">
+        <div>
+            <label for="pickPortfolio">Portfolio:</label>
+            <input type="text" id="pickPortfolio" name="pickPortfolio">
+        
 
+            <label for="removeCoins">Coin:</label>
+            <select id="removeCoins" name="removeCoins">
+                <option value="">Select coin</option>
+                <option value="bitcoin">Bitcoin</option>
+                <option value="ethereum">Ethereum</option>
+                <option value="ripple">Ripple</option>
+                <option value="eos">Eos</option>
+            </select>
+        </div>
+        <div>
+            <label for="removeamount">Amount:</label>
+            <input id="removeamount" type="number" name="removeamount">
+            <button id="removesubmit">Remove</button>
+        </div>
+        
+    </div>
+
+    <div id="removeMessage"></div>
+    <br>
     <div id="PortChart" class="PortChart">
         <h2>Portfolio Charting</h2>
         <label for="pickPortfolio">Portfolio:</label>

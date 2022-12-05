@@ -26,6 +26,43 @@ fetch("/portfolio", {
     }
 })
 
+//all things for portfolio removing
+let removeCoinButton = document.getElementById("removesubmit");
+var currentPrice;
+
+removeCoinButton.addEventListener("click", () => {
+    let username = document.cookie.split("=")[1];
+    let portfolio = document.getElementById("pickPortfolio");
+    let coinSelected = document.getElementById("removeCoins").value;
+    let coinAmount = document.getElementById("removeamount");
+
+    fetch("/removeFromPortfolio", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username: username,
+            portfolio: portfolio.value,
+            coin: coinSelected,
+            amount: coinAmount.value,
+            value: currentPrice
+        }),
+    })
+    .then(response => response)
+    .then(body => { 
+        console.log(body.status);
+        if(body.status === 400) {
+            removeMessage.innerText = "400 Error"
+        }
+        if(body.status === 200) {
+        removeMessage.innerText = "Remove from portfolio successfully" 
+        coinAmount.value = "";
+        }
+        }).catch((error) => {
+        console.log(error);
+    });
+});
 
 let GraphsearchButton = document.getElementById("graphsubmit"); 
 GraphsearchButton.addEventListener("click", () =>{
