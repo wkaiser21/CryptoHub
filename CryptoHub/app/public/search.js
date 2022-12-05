@@ -46,52 +46,73 @@ addCoinButton.addEventListener("click", () => {
 });
 
 // all things for table search 
-let TablesearchButton = document.getElementById("tablesubmit"); 
-
-TablesearchButton.addEventListener("click", () =>{
-    let selectedcointable = document.getElementById("tableCoins").value;
-    let messageDiv = document.getElementById("tablemessage"); 
-    let useramount = document.getElementById("amount");
+function updatetablefunct(){
     let tableresponsestat; 
     let tablesendurl; 
+    let avaliblecoins = ["bitcoin", "ethereum", "ripple", "eos"]; 
 
-    console.log("Selected Coin:" + selectedcointable); 
-    tablesendurl = "/tablesearch?coin="+selectedcointable; 
-    console.log("Send URL:" + tablesendurl); 
+    let worktable = document.getElementById("cointable"); 
+    while(worktable.children.length > 1){
+        worktable.removeChild(worktable.lastChild);
+    }
 
+
+    for(let thiscoin of avaliblecoins){
+
+        tablesendurl = "/tablesearch?coin="+thiscoin; 
+        fetch(tablesendurl).then((response) => {
+            tableresponsestat = response.status; 
+            return response.json(); 
+        }).then((body) => {
     
-    console.log("type of " + typeof(useramount)); 
-    messageDiv.innerText = useramount; 
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
     
-    fetch(tablesendurl).then((response) => {
-        tableresponsestat = response.status; 
-        return response.json(); 
-    }).then((body) => {
+            if(tableresponsestat != 200){
+                console.log("Error: ", body.error); 
+            }  
+            else{
+                console.log("BODY STUFF: ", body.data); 
+                let tr = document.createElement('tr'); 
+                let coinselected = document.createElement('td'); 
+                let coinvalue = document.createElement('td'); 
+                let mktcapval = document.createElement('td'); 
+                let m24hval = document.createElement('td'); 
+                let m24lval = document.createElement('td'); 
+                let timeof = document.createElement('td'); 
+                coinselected.textContent = body.data["name"];
+                coinvalue.textContent = "$"+body.data["current_price"];
+                mktcapval.textContent = "$"+body.data["market_cap"];
+                m24hval.textContent = "$"+body.data["high_24h"];
+                m24lval.textContent = "$"+body.data["low_24h"];
+                timeof.textContent = dateTime 
+                tr.appendChild(coinselected);
+                tr.appendChild(coinvalue);
+                tr.appendChild(mktcapval);
+                tr.appendChild(m24hval);
+                tr.appendChild(m24lval);
+                tr.appendChild(timeof);
+               document.getElementById("cointable").append(tr); 
+               worktable.appendChild(tr); 
+            //document.body.appendChild("cointable"); 
+            }
+        })
+    }
+}
 
-        var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date+' '+time;
 
-        if(tableresponsestat != 200){
-            console.log("Error: ", body.error); 
-        }  
-        else{
-            console.log("BODY STUFF: ", body.data);  
-            let coinselected = document.getElementById("coin_name_td");
-            coinselected.textContent = body.data["name"];
-            let coinvalue = document.getElementById("value_td");
-            coinvalue.textContent = "$"+body.data["current_price"];//change to coin value
-            let mktcapval = document.getElementById("market_cap_td");
-            mktcapval.textContent = "$"+body.data["market_cap"];
-            let m24hval = document.getElementById("24_hr_high_td");
-            m24hval.textContent = "$"+body.data["high_24h"];
-            let m24lval = document.getElementById("24_hr_low_td");
-            m24lval.textContent = "$"+body.data["low_24h"];
-            let timeof = document.getElementById("date_time_td");
-            timeof.textContent = dateTime //change to the time recived coin data
-        } 
-     })
+//run when page loads 
+// window.onload = (event) => {
+//     updatetablefunct(); 
+//   };
+updatetablefunct(); //DO NOT REMOVE
+
+let TablesearchButton = document.getElementById("tablesubmit"); 
+TablesearchButton.addEventListener("click", () =>{
+    updatetablefunct(); 
+
 }); 
 
 
@@ -128,15 +149,6 @@ GraphsearchButton.addEventListener("click", () =>{
                 xaxis.push(new Date(returnprices[item][0])); 
                 yaxis.push(returnprices[item][1]); 
             }
-            // console.log("x axis ", xaxis); 
-            // console.log()
-            // console.log()
-            // console.log("y axis ", yaxis); 
-            /*
-            Plotly.newPlot( Display, [{
-                x: [1, 2, 3, 4, 5],
-                y: [1, 2, 4, 8, 16] }], {
-                margin: { t: 0 } } ); */
             
             Plotly.newPlot( Display, [{
                 x: xaxis,

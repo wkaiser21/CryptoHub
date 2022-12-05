@@ -53,20 +53,20 @@
 <h3>Information Search:</h3>
 
 <div class="tablesearch">
-		<label for="tableCoins">Coins:</label>
+		<!-- <label for="tableCoins">Coins:</label>
 		<select id="tableCoins" name="tableCoins">
 			<option value="">Select coin</option>
 			<option value="bitcoin">Bitcoin</option>
 			<option value="ethereum">Ethereum</option>
 			<option value="ripple">Ripple</option>
 			<option value="eos">Eos</option>
-		</select>
+		</select> -->
 	
-		<button id="tablesubmit">Search</button>
+		<button id="tablesubmit">Refresh Values</button>
 		<div id="tablemessage"></div>
 	
 
-	<table>
+	<table id="cointable">
 		<tr>
 			<th>Name</th>
 			<th>Value (USD)</th>
@@ -75,14 +75,22 @@
 			<th>24 Hour Low(USD)</th>
 			<th>Date/Time</th>
 		</tr>
-		<tr id="coinrow">
+		 <!-- <tr id="coinrow">
 			<td id="coin_name_td"></td>
 			<td id="value_td"></td>
 			<td id="market_cap_td"></td>
 			<td id="24_hr_high_td"></td>
 			<td id="24_hr_low_td"></td>
 			<td id="date_time_td"></td>
-		</tr>
+		</tr>  -->
+		<!-- <tr id="btcrow"></tr> 
+		<tr id="ethrow"></tr>
+		<tr id="rplrow"></tr>  
+		<tr id="eosrow"></tr>  -->
+
+
+
+
 		<tbody id="results"></tbody>
 	</table>
 </div>
