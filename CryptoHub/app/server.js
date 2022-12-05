@@ -75,6 +75,22 @@ app.post("/addToPortfolio", (req, res) => {
             res.status(500).send();
         });
 
+        //add to additional runningportfolio if userportfolio doesn't exist.
+        pool.query(`SELECT * FROM users WHERE username = $1`, [username])
+        .then((result) => {
+            if (result.rows.length != 0) {
+                pool.query(`INSERT INTO runningportfolio (username, portfolio, coin, amount) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
+                    .then(() => {
+                        console.log(username, "Inserted Successfully");
+                        res.status(200).send();
+                    })
+                    .catch((error) => {
+                        console.log(error + "Insert failed");
+                        res.status(500).send();
+                    });
+            }})    
+    
+
     if (portfolio === "Portfolio1") {
         pool.query(`INSERT INTO portfolio1 (username, coin, amount, value, date) VALUES ($1, $2, $3, $4, current_timestamp)`, [username, coin, amount, value])
         .then(() => {
