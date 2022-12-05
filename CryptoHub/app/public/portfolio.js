@@ -1,5 +1,8 @@
 let table = document.getElementById("portfolioTable");
 let pName = document.getElementById("pName");
+let removeCoinButton = document.getElementById("removesubmit");
+var currentPrice;
+
 console.log(pName);
 fetch("/portfolio", {
     method: "POST",
@@ -22,7 +25,7 @@ fetch("/portfolio", {
     }
 })
 
-//dynamically update portfolios list in dropdown when page loads
+//TODO dynamically update portfolios list in dropdown when page loads
 let username = document.cookie.split("=")[1];
 fetch("/grabPortfolios" , {
     method: "POST",
@@ -45,44 +48,47 @@ fetch("/grabPortfolios" , {
 });
 
 
-
-
 //all things for portfolio removing
-let removeCoinButton = document.getElementById("removesubmit");
-var currentPrice;
-
 removeCoinButton.addEventListener("click", () => {
     let username = document.cookie.split("=")[1];
     let portfolio = document.getElementById("pickPortfolio");
     let coinSelected = document.getElementById("removeCoins").value;
     let coinAmount = document.getElementById("removeamount");
+    sendurl = "/tablesearch?coin="+coinSelected;
 
-    fetch("/removeFromPortfolio", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            username: username,
-            portfolio: portfolio.value,
-            coin: coinSelected,
-            amount: coinAmount.value,
-            value: currentPrice
-        }),
-    })
-    .then(response => response)
-    .then(body => { 
-        console.log(body.status);
-        if(body.status === 400) {
-            removeMessage.innerText = "400 Error"
-        }
-        if(body.status === 200) {
-        removeMessage.innerText = "Remove from portfolio successfully" 
-        coinAmount.value = "";
-        }
-        }).catch((error) => {
-        console.log(error);
-    });
+    fetch(sendurl)
+        .then(res => res.json())
+        .then(body => { 
+            currentPrice = body.data["current_price"];
+            console.log("Live Price Inside Fetch: " + currentPrice);
+
+        fetch("/removeFromPortfolio", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                portfolio: portfolio.value,
+                coin: coinSelected,
+                amount: coinAmount.value,
+                value: (-currentPrice)
+            }),
+        })
+        .then(response => response)
+        .then(body => { 
+            console.log(body.status);
+            if(body.status === 400) {
+                addMessage.innerText = "400 Error"
+            }
+            if(body.status === 200) {
+            addMessage.innerText = "Added to portfolio successfully" 
+            coinAmount.value = "";
+            }
+            }).catch((error) => {
+            console.log(error);
+        });
+        })
 });
 
 let GraphsearchButton = document.getElementById("graphsubmit"); 

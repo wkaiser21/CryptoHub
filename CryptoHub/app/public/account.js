@@ -10,7 +10,7 @@ let totalValue = 0;
 let ethPercentage = 0;
 let bitPercentage = 0;
 let eosPercentage = 0;
-let rippplePercentage = 0;
+let ripplePercentage = 0;
 
 
 logout.addEventListener("click", submitLogout);
@@ -56,7 +56,6 @@ fetch("/getEthValue", {
     ethPercentage = data / totalValue;
     ethValue.textContent = ("Ethereum Value: " + "$" + data.toLocaleString());
 })
-
 
 //grab bit value
 fetch("/getBitValue", {
@@ -121,10 +120,10 @@ fetch("/getRippleValue", {
     
 
 
-let Display = document.getElementById('DisplayPieGraph');
+let display = document.getElementById('DisplayPieGraph');
 
 const coinInfo = [{
-    values: [bitPercentage, ethPercentage, rippplePercentage,eosPercentage],
+    values: [bitPercentage, ethPercentage, ripplePercentage, eosPercentage],
     labels: ['Bitcoin', 'Ethereum', 'Ripple', 'EOS'],
     type: 'pie'
   }];
@@ -134,10 +133,8 @@ const coinInfo = [{
     width: 500
   };
   
-Plotly.newPlot(Display, coinInfo, layout);
+Plotly.newPlot(display, coinInfo, layout);
 })
-
-
 
 function submitLogout() {
     fetch("/logout", {

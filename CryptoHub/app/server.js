@@ -135,6 +135,18 @@ app.post("/removeFromPortfolio", (req, res) => {
     console.log(amount);
     console.log(value);
 
+
+    pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
+        .then(() => {
+            console.log(username, "Inserted Successfully into original portfolio");
+            res.status(200).send();
+        })
+        .catch((error) => {
+            console.log(error + "Insert failed");
+            res.status(500).send();
+        });
+
+
     //add to additional runningportfolio
     pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
@@ -293,17 +305,17 @@ app.post("/getEthValue", async (req, res) => {
     let loggedInUser = req.cookies.username;
     
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ethereum' and username = $1`, [loggedInUser]
-        ).then((result) => {
-            data = result.rows[0].sum;
-            console.log("Eth value is: ", data);
-            res.status(200);
-            res.send(data);
-        })
-        .catch((error) => {
-            res.sendStatus(500);
-            console.log(error);
-            res.send();
-        });
+    ).then((result) => {
+        data = result.rows[0].sum;
+        console.log("Eth value is: ", data);
+        res.status(200);
+        res.send(data);
+    })
+    .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        res.send();
+    });
     });
 
 app.post("/getBitValue", async (req, res) => {

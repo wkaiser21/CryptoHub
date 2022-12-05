@@ -124,8 +124,10 @@ TablesearchButton.addEventListener("click", () =>{
 let GraphsearchButton = document.getElementById("graphsubmit"); 
 
 GraphsearchButton.addEventListener("click", () =>{
-    //let selectedcoingraph = document.getElementById("graphCoins").value;
+    let selectedcoingraph = document.getElementById("graphCoins").value;
+   
     var selectedcoins = [];
+
     for (var option of document.getElementById('graphCoins').options)
     {
         if (option.selected) {
