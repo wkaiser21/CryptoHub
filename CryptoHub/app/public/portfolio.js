@@ -12,19 +12,40 @@ fetch("/portfolio", {
     })
 }).then(response => {
     if (response.status === 200) {
-        console.log("Portfolio(s) found");
         return response.json();
-    } else {
-        console.log("No portfolios found");
     }
 }).then(data => {
     if(data.username != undefined) {
         pName.textContent = (data.username + "'s" + " Portfolio");
-        console.log(data.username);
     } else {
         pName.textContent = ("User Not Logged In, Please Log In");
     }
 })
+
+//dynamically update portfolios list in dropdown when page loads
+let username = document.cookie.split("=")[1];
+fetch("/grabPortfolios" , {
+    method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username: username,
+        }),
+    })
+    .then(response => response)
+    .then(body => {
+        if(body.status === 200) {
+        //need to loop through result.rows and grab oject valuels for portfolio names
+        //for (let i = 0; i < body.length; i++) {}
+        console.log(body);
+        }
+        }).catch((error) => {
+        console.log(error);
+});
+
+
+
 
 //all things for portfolio removing
 let removeCoinButton = document.getElementById("removesubmit");
