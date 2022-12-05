@@ -23,11 +23,13 @@ function submitLogin() {
         if(body.status === 401) {
         message.innerText = "Username or Password didn't match"
         } if(body.status === 200) {
-        message.innerText = "Logged in successfully" }
+        message.innerText = "Logged in successfully"
+        location.href = "portfolio.html";
+        }
         }).catch((error) => {
         console.log(error);
     });
-    location.href = "portfolio.html";
+    
 }
 
 

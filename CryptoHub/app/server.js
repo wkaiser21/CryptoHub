@@ -67,7 +67,7 @@ app.post("/addToPortfolio", (req, res) => {
 
     pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
         .then(() => {
-            console.log(username, "Inserted Successfully");
+            console.log(username, "Inserted Successfully into original portfolio");
             res.status(200).send();
         })
         .catch((error) => {
@@ -75,20 +75,20 @@ app.post("/addToPortfolio", (req, res) => {
             res.status(500).send();
         });
 
-        //add to additional runningportfolio if userportfolio doesn't exist.
-        pool.query(`SELECT * FROM users WHERE username = $1`, [username])
-        .then((result) => {
-            if (result.rows.length != 0) {
-                pool.query(`INSERT INTO runningportfolio (username, portfolio, coin, amount) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
-                    .then(() => {
-                        console.log(username, "Inserted Successfully");
-                        res.status(200).send();
-                    })
-                    .catch((error) => {
-                        console.log(error + "Insert failed");
-                        res.status(500).send();
-                    });
-            }})    
+    //add to additional runningportfolio
+    pool.query(`SELECT * FROM users WHERE username = $1`, [username])
+    .then((result) => {
+        if (result.rows.length != 0) {
+            pool.query(`INSERT INTO runningportfolio (username, portfolio, coin, amount) VALUES ($1, $2, $3, $4)`, [username, portfolio, coin, amount])
+                .then(() => {
+                    console.log(username, "Inserted Successfully Into runningportfolio");
+                    res.status(200).send();
+                })
+                .catch((error) => {
+                    console.log(error + "Insert failed");
+                    res.status(500).send();
+                });
+        }})    
     
 
     if (portfolio === "Portfolio1") {
