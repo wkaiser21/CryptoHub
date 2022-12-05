@@ -74,7 +74,7 @@ function updatetablefunct(){
                 console.log("Error: ", body.error); 
             }  
             else{
-                console.log("BODY STUFF: ", body.data); 
+                //console.log("BODY STUFF: ", body.data); 
                 let tr = document.createElement('tr'); 
                 let coinselected = document.createElement('td'); 
                 let coinvalue = document.createElement('td'); 
@@ -124,46 +124,110 @@ TablesearchButton.addEventListener("click", () =>{
 let GraphsearchButton = document.getElementById("graphsubmit"); 
 
 GraphsearchButton.addEventListener("click", () =>{
-    let selectedcoingraph = document.getElementById("graphCoins").value;
+    //let selectedcoingraph = document.getElementById("graphCoins").value;
+    var selectedcoins = [];
+    for (var option of document.getElementById('graphCoins').options)
+    {
+        if (option.selected) {
+            selectedcoins.push(option.value);
+        }
+    }
+    console.log("SELECTED BUTTONS",selectedcoins); 
     let SelectedGraphTime = document.getElementById("graphtime").value;
     let Display = document.getElementById('DisplayGraph');
     let graphtodate = Math.floor(Date.now()/1000); //add today UTC day 
     let graphfromdate = graphtodate - SelectedGraphTime; //do the utc math with selectedgraphtime 
     console.log("FROM DATE: ", graphfromdate); 
     console.log("TO DATE: ", graphtodate); 
-    let graphsendurl = "/graphsearch?coin=" + selectedcoingraph + "&from=" + graphfromdate + "&to=" + graphtodate;
-    console.log("SEND URL", graphsendurl); 
     let graphresponsestat; 
-    let xaxis = []; 
-    let yaxis = []; 
+    let btcaxis = []; 
+    let ripaxis = []; 
+    let ethaxis = []; 
+    let eosaxis = [];  
+    let yaxis = [];
+    //let xaxis = []; 
 
-   //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
-   fetch(graphsendurl).then((response) => {
-    graphresponsestat = response.status; 
-    return response.json(); 
-    }).then((body) => {
-        if(graphresponsestat != 200){
-            console.log("Error: ", body.error); 
-        }
-        else{
-            console.log("BODY STUFF: ", body.data.prices); 
-            let returnprices = body.data.prices; 
-            //do axis stuff 
-            for( let item = 0; item < returnprices.length; item++ ){
-                xaxis.push(new Date(returnprices[item][0])); 
-                yaxis.push(returnprices[item][1]); 
-            }
-            
-            Plotly.newPlot( Display, [{
+    for(let currentcoin of selectedcoins){
+       let xaxis = []; 
+
+        let graphsendurl = "/graphsearch?coin=" + currentcoin + "&from=" + graphfromdate + "&to=" + graphtodate;
+        console.log("SEND URL", graphsendurl); 
+        //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
+        fetch(graphsendurl).then((response) => {
+         graphresponsestat = response.status; 
+         return response.json(); 
+         }).then((body) => {
+             if(graphresponsestat != 200){
+                 console.log("Error: ", body.error); 
+             }
+             else{
+                 console.log("BODY STUFF: ", body.data.prices); 
+                 let returnprices = body.data.prices; 
+                 //do axis stuff 
+                 for( let item = 0; item < returnprices.length; item++ ){
+                    if(currentcoin == "ethereum"){
+                         ethaxis.push(returnprices[item][1]);
+                     }
+                     if(currentcoin == "ripple"){
+                         ripaxis.push(returnprices[item][1]);
+                     }
+                    if(currentcoin == "bitcoin"){
+                        btcaxis.push(returnprices[item][1]); 
+                    }
+                     if(currentcoin == "eos"){
+                         eosaxis.push(returnprices[item][1]);
+                     }
+                     xaxis.push(new Date(returnprices[item][0])); 
+                     //yaxis.push(returnprices[item][1]); 
+                 }
+                 console.log("BTC ARRAY", btcaxis); 
+                 console.log("ETH ARRAY", ethaxis); 
+                 console.log("EOS ARRAY", eosaxis); 
+                 console.log("RIP ARRAY", ripaxis); 
+                //  Plotly.newPlot( Display, [{
+                //      x: xaxis,
+                //      y: btcaxis }], {
+                //      margin: { t: 0 }, xaxis : {title : {text: "Time"}},  yaxis : {title : {text: "Value (USD)"}} } ); 
+             }
+             var trace1 = {
                 x: xaxis,
-                y: yaxis }], {
-                margin: { t: 0 }, xaxis : {title : {text: "Time"}},  yaxis : {title : {text: "Value (USD)"}} } ); 
+                y: btcaxis,
+                name: 'BTC data',
+                type: 'scatter'
+              };
+              
+              var trace2 = {
+                x: xaxis,
+                y: ethaxis,
+                name: 'ETH data',
+                type: 'scatter'
+              };
 
-        }
+              var trace3 = {
+                x: xaxis,
+                y: ripaxis,
+                name: 'Ripple data',
+                type: 'scatter'
+              };
 
-
-    }); 
-
+              var trace4 = {
+                x: xaxis,
+                y: eosaxis,
+                name: 'EOS data',
+                type: 'scatter'
+              };
+              
+              var data = [trace1, trace2, trace3, trace4];
+              
+              var layout = {
+                title: 'Historic Values',
+                yaxis: {title: 'Value (USD)'},
+                xaxis: {title: 'TIme'}
+              };
+              
+              Plotly.newPlot(Display, data, layout);
+         }); 
+    }
 
     }); 
 
