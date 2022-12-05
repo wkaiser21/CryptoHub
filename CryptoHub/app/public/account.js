@@ -39,3 +39,18 @@ function submitLogout() {
     logoutMessage.innerText = "Logged out successfully"
     location.href = "login.html";
 }
+
+
+let Display = document.getElementById('DisplayPieGraph');
+var data = [{
+    values: [55, 20, 10,15],
+    labels: ['Bitcoin', 'Ethereum', 'Ripple', 'EOS'],
+    type: 'pie'
+  }];
+  
+  var layout = {
+    height: 400,
+    width: 500
+  };
+  
+Plotly.newPlot(Display, data, layout);
