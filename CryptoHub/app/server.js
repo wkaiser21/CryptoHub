@@ -28,8 +28,12 @@ app.post("/grabPortfolios", (req, res) => {
 
     pool.query(`SELECT DISTINCT portfolio FROM runningportfolio WHERE username = $1`, [username])
         .then((result) => {
-            console.log((result.rows), "Grabbed portfolios");
-            res.status(200).send(result.rows);
+            let portfolioNames = [];
+            for (i = 0; i < result.rows.length; i++) {
+                portfolioNames.push(Object.values(result.rows[i]));
+            }
+            console.log(portfolioNames.flat());
+            res.status(200).send(portfolioNames.flat());
         })
         .catch((error) => {
             console.log(error + "Didn't grab");
@@ -136,18 +140,35 @@ app.post("/removeFromPortfolio", (req, res) => {
     console.log(value);
 
 
-    pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
-        .then(() => {
-            console.log(username, "Inserted Successfully into original portfolio");
+    pool.query(`SELECT SUM(value) FROM portfolio WHERE coin = $1 and username = $2 and portfolio = $3`, [coin, username, portfolio])
+    .then((result) => {
+        if (result.rows[0].sum >= (value * amount)) {
+            pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
+            .then(() => {
+            console.log(username, "Inserted Negative Successfully into original portfolio");
             res.status(200).send();
-        })
-        .catch((error) => {
+            })
+            .catch((error) => {
             console.log(error + "Insert failed");
             res.status(500).send();
         });
+        }
+        // else {
+        //     let liveBalalance = (-result.rows[0].sum);
+        //     console.log("live balance " + liveBalalance);
+        //     pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, liveBalalance])
+        //     .then(() => {
+        //     console.log(username, "Inserted Negative Successfully into original portfolio");
+        //     res.status(200).send();
+        // })
+        //     .catch((error) => {
+        //     console.log(error + "Insert failed");
+        //     res.status(500).send();
+        // });
+        // }
+    })   
 
-
-    //add to additional runningportfolio
+    //remove from runningportfolio
     pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length != 0) {
@@ -286,19 +307,28 @@ app.get("/portfolioinfo", (req, res) =>{
  }); 
 
 app.post("/account", async (req, res) => {
-let loggedInUser = req.cookies.username;
-pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE username = $1`, [loggedInUser]
-    ).then((result) => {
-        data = result.rows[0].sum;
-        console.log("account value is: ", data);
-        res.status(200);
-        res.send(data);
-    })
-    .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        res.send();
-    });
+    let loggedInUser = req.cookies.username;
+    pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE username = $1`, [loggedInUser]
+        ).then((result) => {
+            data = result.rows[0].sum;
+            zeroData = 0;
+            if (data == null) {
+                res.send([zeroData]);
+            }
+            else if (data < 0) {
+                res.send([zeroData]);
+                console.log("this is zero");
+            }
+            else {
+                res.status(200);
+                res.send(data);
+            }
+        })
+        .catch((error) => {
+            res.sendStatus(500);
+            console.log(error);
+            res.send();
+        });
 });
 
 app.post("/getEthValue", async (req, res) => {
@@ -307,9 +337,18 @@ app.post("/getEthValue", async (req, res) => {
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ethereum' and username = $1`, [loggedInUser]
     ).then((result) => {
         data = result.rows[0].sum;
-        console.log("Eth value is: ", data);
-        res.status(200);
-        res.send(data);
+        zeroData = 0;
+        if (data == null) {
+            res.send([zeroData]);
+        }
+        else if (data < 0) {
+            res.send([zeroData]);
+            console.log("this is zero");
+        }
+        else {
+            res.status(200);
+            res.send(data);
+        }
     })
     .catch((error) => {
         res.sendStatus(500);
@@ -324,13 +363,23 @@ app.post("/getBitValue", async (req, res) => {
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'bitcoin' and username = $1`, [loggedInUser]
         ).then((result) => {
             data = result.rows[0].sum;
-            console.log("Bitcoin value is: ", data);
-            res.status(200);
-            res.send(data);
+            zeroData = 0;
+            if (data == null) {
+                res.send([zeroData]);
+                console.log("this is null");
+            }
+            else if (data < 0) {
+                res.send([zeroData]);
+                console.log("this is zero");
+            }
+            else {
+                res.status(200);
+                res.send(data);
+            }
         })
         .catch((error) => {
             res.sendStatus(500);
-            console.log(error);
+            console.log("get bitValue error" + error);
             res.send();
         });
     });
@@ -341,9 +390,18 @@ app.post("/getEosValue", async (req, res) => {
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'eos' and username = $1`, [loggedInUser]
         ).then((result) => {
             data = result.rows[0].sum;
-            console.log("Eos value is: ", data);
-            res.status(200);
-            res.send(data);
+            zeroData = 0;
+            if (data == null) {
+                res.send([zeroData]);
+            }
+            else if (data < 0) {
+                res.send([zeroData]);
+                console.log("this is zero");
+            }
+            else {
+                res.status(200);
+                res.send(data);
+            }
         })
         .catch((error) => {
             res.sendStatus(500);
@@ -357,10 +415,21 @@ app.post("/getRippleValue", async (req, res) => {
     
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ripple' and username = $1`, [loggedInUser]
         ).then((result) => {
+            console.log("rip value " + result.rows[0]);
+            console.log("rip value sum" + result.rows[0].sum);
             data = result.rows[0].sum;
-            console.log("Ripple value is: ", data);
-            res.status(200);
-            res.send(data);
+            zeroData = 0;
+            if (data == null) {
+                res.send([zeroData]);
+            }
+            else if (data < 0) {
+                res.send([zeroData]);
+                console.log("this is zero");
+            }
+            else {
+                res.status(200);
+                res.send(data);
+            }
         })
         .catch((error) => {
             res.sendStatus(500);

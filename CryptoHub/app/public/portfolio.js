@@ -1,6 +1,7 @@
 let table = document.getElementById("portfolioTable");
 let pName = document.getElementById("pName");
 let removeCoinButton = document.getElementById("removesubmit");
+let username = document.cookie.split("=")[1];
 var currentPrice;
 
 console.log(pName);
@@ -26,7 +27,6 @@ fetch("/portfolio", {
 })
 
 //TODO dynamically update portfolios list in dropdown when page loads
-let username = document.cookie.split("=")[1];
 fetch("/grabPortfolios" , {
     method: "POST",
         headers: {
@@ -41,12 +41,18 @@ fetch("/grabPortfolios" , {
         if(body.status === 200) {
         //need to loop through result.rows and grab oject valuels for portfolio names
         //for (let i = 0; i < body.length; i++) {}
-        console.log(body);
+        console.log("body in here " + body);
         }
         }).catch((error) => {
         console.log(error);
 });
-
+// fetch(`/grabPortfolios?username=${username}`).then(response => {
+//     return response.json();
+//   }).then(body => {
+//     {
+//         console.log(body.length);
+//     }
+//   });
 
 //all things for portfolio removing
 removeCoinButton.addEventListener("click", () => {

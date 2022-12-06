@@ -53,6 +53,8 @@ fetch("/getEthValue", {
         console.log("No Account found");
     }
 }).then(data => {
+    console.log("eth data" + data);
+    
     ethPercentage = data / totalValue;
     ethValue.textContent = ("Ethereum Value: " + "$" + data.toLocaleString());
 })
@@ -68,11 +70,15 @@ fetch("/getBitValue", {
     })
 }).then(response => {
     if (response.status === 200) {
+        bitPercentage = 0;
+        console.log("inside if error");
         return response.json();
     } else {
+        console.log("inside else error");
         console.log("No Account found");
     }
 }).then(data => {
+    console.log("bit data" + data);
     bitPercentage = data / totalValue;
     bitValue.textContent = ("Bitcoin Value: " + "$" + data.toLocaleString());
 })
@@ -94,6 +100,7 @@ fetch("/getEosValue", {
         console.log("No Account found");
     }
 }).then(data => {
+    console.log("bit percentage in eos value" + bitPercentage);
     eosPercentage = data / totalValue;
     eosValue.textContent = ("Eos Value: " + "$" + data.toLocaleString());
 })
