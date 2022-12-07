@@ -7,17 +7,18 @@
     <title>Portfolio</title>
     <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
 </head>
-<div>
+<nav>
     <a href="search.html">Search</a>
 	|
 	<a href="portfolio.html">Portfolio</a>
     |
     <a href="account.html">Account</a>
-</div>
+</nav>
 <body>
-
     <div>
         <h1 id="pName">Portfolio</h1>
+        <h3>Your list of portfolios:</h3>
+        <h4 id="portfolioList">List</h4>
         <table>
             <tbody id="portfolioTable">
 
@@ -25,13 +26,11 @@
         </table>
     </div>
     <br>
-    <h3>Remove From Portfolio</h3>
+    <h2>Remove From Portfolio</h3>
     <div class = "portremove">
         <div>
             <label for="pickPortfolio">Portfolio:</label>
             <input type="text" id="pickPortfolio" name="pickPortfolio">
-        
-
             <label for="removeCoins">Coin:</label>
             <select id="removeCoins" name="removeCoins">
                 <option value="">Select coin</option>
@@ -46,32 +45,45 @@
             <input id="removeamount" type="number" name="removeamount">
             <button id="removesubmit">Remove</button>
         </div>
-        
+        <div id="removeMessage"></div>
     </div>
-
-    <div id="removeMessage"></div>
-    <br>
-    <div id="PortChart" class="PortChart">
-        <h2>Portfolio Charting</h2>
-        <label for="pickPortfolio">Portfolio:</label>
-		<select id="pickPortfolio" name="pickPortfolio">
-			<option value="">Select Portfolio</option>
-            <option value="PortfolioTotal">All Portfolios</option>
-			<option value="Portfolio1">Portfolio 1</option>
-			<option value="Portfolio2">Portfolio 2</option>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h2>Current Portfolio Holdings</h2>
+<label for="portfolioNames">Portfolio Names:</label>
+		<select id="portfolioNames" name="portfolioNames">
 		</select>
-        <label for="ChartCoins">Coins:</label>
-		<select id="ChartCoins" name="ChartCoins">
-			<option value="">Select coin</option>
-            <option value="allcoins">Check All Coins</option>
-			<option value="bitcoin">Bitcoin</option>
-			<option value="ethereum">Ethereum</option>
-			<option value="ripple">Ripple</option>
-			<option value="eos">Eos</option>
+        <button id="portfolioSelect">Select</button>
+<br>
+<br>
+<table>
+	<thead>
+		<tr><th>Coin</th><th>Amount</th><th>Value</th></tr>
+	</thead>
+	<tbody id="returnedPortfolio"></tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h2>Portfolio Transactions</h2>
+<label for="portfolioNames2">Portfolio Names:</label>
+		<select id="portfolioNames2" name="portfolioNames2">
 		</select>
-        <button id="graphsubmit">Search</button>
-        <div id="DisplayGraph" style="width:800px;height:350px;margin:20px;"></div>
-    </div>
+        <button id="getTransactions">Select</button>
+<br>
+<br>
+<table>
+	<thead>
+		<tr><th>Coin</th><th>Amount</th><th>Value</th><th>Date</th></tr>
+	</thead>
+	<tbody id="returnedPortfolioTransactions"></tbody>
+</table>
 </body>
 <script src="portfolio.js"></script>
 </html>

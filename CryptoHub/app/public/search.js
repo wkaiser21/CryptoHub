@@ -74,7 +74,6 @@ function updatetablefunct(){
                 console.log("Error: ", body.error); 
             }  
             else{
-                //console.log("BODY STUFF: ", body.data); 
                 let tr = document.createElement('tr'); 
                 let coinselected = document.createElement('td'); 
                 let coinvalue = document.createElement('td'); 
@@ -100,18 +99,12 @@ function updatetablefunct(){
                 tr.appendChild(timeof);
                document.getElementById("cointable").append(tr); 
                worktable.appendChild(tr); 
-            //document.body.appendChild("cointable"); 
             }
         })
     }
 }
 
-
-//run when page loads 
-// window.onload = (event) => {
-//     updatetablefunct(); 
-//   };
-updatetablefunct(); //DO NOT REMOVE
+updatetablefunct();
 
 let TablesearchButton = document.getElementById("tablesubmit"); 
 TablesearchButton.addEventListener("click", () =>{
@@ -119,8 +112,6 @@ TablesearchButton.addEventListener("click", () =>{
 
 }); 
 
-
-//graph search stuff. 
 let GraphsearchButton = document.getElementById("graphsubmit"); 
 
 GraphsearchButton.addEventListener("click", () =>{
@@ -137,8 +128,8 @@ GraphsearchButton.addEventListener("click", () =>{
     console.log("SELECTED BUTTONS",selectedcoins); 
     let SelectedGraphTime = document.getElementById("graphtime").value;
     let Display = document.getElementById('DisplayGraph');
-    let graphtodate = Math.floor(Date.now()/1000); //add today UTC day 
-    let graphfromdate = graphtodate - SelectedGraphTime; //do the utc math with selectedgraphtime 
+    let graphtodate = Math.floor(Date.now()/1000);
+    let graphfromdate = graphtodate - SelectedGraphTime;
     console.log("FROM DATE: ", graphfromdate); 
     console.log("TO DATE: ", graphtodate); 
     let graphresponsestat; 
@@ -147,90 +138,78 @@ GraphsearchButton.addEventListener("click", () =>{
     let ethaxis = []; 
     let eosaxis = [];  
     let yaxis = [];
-    //let xaxis = []; 
 
     for(let currentcoin of selectedcoins){
-       let xaxis = []; 
+        let xaxis = []; 
 
         let graphsendurl = "/graphsearch?coin=" + currentcoin + "&from=" + graphfromdate + "&to=" + graphtodate;
         console.log("SEND URL", graphsendurl); 
-        //https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
         fetch(graphsendurl).then((response) => {
-         graphresponsestat = response.status; 
-         return response.json(); 
-         }).then((body) => {
-             if(graphresponsestat != 200){
-                 console.log("Error: ", body.error); 
-             }
-             else{
-                 console.log("BODY STUFF: ", body.data.prices); 
-                 let returnprices = body.data.prices; 
-                 //do axis stuff 
-                 for( let item = 0; item < returnprices.length; item++ ){
+        graphresponsestat = response.status; 
+        return response.json(); 
+        }).then((body) => {
+            if(graphresponsestat != 200){
+                console.log("Error: ", body.error); 
+            }
+            else{
+                console.log("BODY STUFF: ", body.data.prices); 
+                let returnprices = body.data.prices; 
+                for( let item = 0; item < returnprices.length; item++ ){
                     if(currentcoin == "ethereum"){
                          ethaxis.push(returnprices[item][1]);
-                     }
-                     if(currentcoin == "ripple"){
+                    }
+                    if(currentcoin == "ripple"){
                          ripaxis.push(returnprices[item][1]);
-                     }
+                    }
                     if(currentcoin == "bitcoin"){
                         btcaxis.push(returnprices[item][1]); 
                     }
-                     if(currentcoin == "eos"){
+                    if(currentcoin == "eos"){
                          eosaxis.push(returnprices[item][1]);
-                     }
-                     xaxis.push(new Date(returnprices[item][0])); 
-                     //yaxis.push(returnprices[item][1]); 
-                 }
-                 console.log("BTC ARRAY", btcaxis); 
-                 console.log("ETH ARRAY", ethaxis); 
-                 console.log("EOS ARRAY", eosaxis); 
-                 console.log("RIP ARRAY", ripaxis); 
-                //  Plotly.newPlot( Display, [{
-                //      x: xaxis,
-                //      y: btcaxis }], {
-                //      margin: { t: 0 }, xaxis : {title : {text: "Time"}},  yaxis : {title : {text: "Value (USD)"}} } ); 
-             }
-             var trace1 = {
+                    }
+                    xaxis.push(new Date(returnprices[item][0])); 
+                }
+                console.log("BTC ARRAY", btcaxis); 
+                console.log("ETH ARRAY", ethaxis); 
+                console.log("EOS ARRAY", eosaxis); 
+                console.log("RIP ARRAY", ripaxis); 
+                }
+            var trace1 = {
                 x: xaxis,
                 y: btcaxis,
                 name: 'BTC data',
                 type: 'scatter'
-              };
-              
-              var trace2 = {
+            };
+            
+            var trace2 = {
                 x: xaxis,
                 y: ethaxis,
                 name: 'ETH data',
                 type: 'scatter'
-              };
+            };
 
-              var trace3 = {
+            var trace3 = {
                 x: xaxis,
                 y: ripaxis,
                 name: 'Ripple data',
                 type: 'scatter'
-              };
+            };
 
-              var trace4 = {
+            var trace4 = {
                 x: xaxis,
                 y: eosaxis,
                 name: 'EOS data',
                 type: 'scatter'
-              };
+            };
               
-              var data = [trace1, trace2, trace3, trace4];
-              
-              var layout = {
-                title: 'Historic Values',
-                yaxis: {title: 'Value (USD)'},
-                xaxis: {title: 'Time'}, 
-               // margin: { t: 0 }
-              };
-              
-              Plotly.newPlot(Display, data, layout);
+            var data = [trace1, trace2, trace3, trace4];
+            
+            var layout = {
+            title: 'Historic Values',
+            yaxis: {title: 'Value (USD)'},
+            xaxis: {title: 'Time'}, 
+            };
+            Plotly.newPlot(Display, data, layout);
          }); 
-    }
-
-    }); 
+    }}); 
 

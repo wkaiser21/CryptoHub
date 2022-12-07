@@ -15,21 +15,18 @@
 	 <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
 </head>
 <body>
-	<div>
+	<nav>
 		<a href="search.html">Search</a>
 		|
 		<a href="portfolio.html">Portfolio</a>
 		|
 		<a href="account.html">Account</a>
-	</div>
-
+	</nav>
 <h3>Add to Portfolio</h3>
 <div class = "portadd">
 	<div>
 		<label for="pickPortfolio">Portfolio:</label>
 		<input type="text" id="pickPortfolio" name="pickPortfolio">
-	
-
 		<label for="addCoins">Coin:</label>
 		<select id="addCoins" name="addCoins">
 			<option value="">Select coin</option>
@@ -44,20 +41,13 @@
 		<input id="addamount" type="number" name="addamount">
 		<button id="addsubmit">Add</button>
 	</div>
-	
 </div>
-
 <div id="addMessage"></div>
-
 <br>
 <h3>Information Search:</h3>
-
 <div class="tablesearch">
-	
 		<button id="tablesubmit">Refresh Values</button>
 		<div id="tablemessage"></div>
-	
-
 	<table id="cointable">
 		<tr>
 			<th>Name</th>
@@ -67,18 +57,12 @@
 			<th>24 Hour Low(USD)</th>
 			<th>Date/Time</th>
 		</tr>
-
-
 		<tbody id="results"></tbody>
 	</table>
 </div>
-
 <br>
 <h3>Graph Search:</h3>
-
 <div class="graphsearch">
-	
-
 		<label for="graphCoins">Coins:</label>
 		<select id="graphCoins" multiple="multiple">
 			<option value="bitcoin">Bitcoin</option>
@@ -86,7 +70,6 @@
 			<option value="ripple">Ripple</option>
 			<option value="eos">Eos</option>
 		  </select>
-
 		<label for="graphtime">Time Range:</label>
 		<select id="graphtime" name="graphtime">
 			<option value="">Select Range</option>
@@ -99,11 +82,9 @@
 			<option value="94348800">3 Year</option>
 			<option value="157248000">5 Year</option>
 		</select>
-
 		<button id="graphsubmit">Search</button>
 		<br>
 		<div id="DisplayGraph" style="width:800px;height:350px;margin:20px;"></div>
-
 </div>
 
 <script src="search.js"></script>

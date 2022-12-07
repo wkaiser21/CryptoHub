@@ -6,39 +6,39 @@
     <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
 </head>
 <body>
-<div>
+<nav>
     <a href="search.html">Search</a>
 	|
 	<a href="portfolio.html">Portfolio</a>
     |
     <a href="account.html">Account</a>
-
-</div>
-    
+</nav>
 <div>
-    <h1 id="accountName">Account: </h1>
+    <h1 id="accountName"></h1>
     <h3 id="bitcoinValue">Bitcoin Value: $0 </h3>
     <h3 id="ethereumValue">Ethereum Value: $0 </h3>
     <h3 id="rippleValue">Ripple Value: $0 </h3>
     <h3 id="eosValue">Eos Value: $0 </h3>
     <h3 id="accountValue">Total Account Value: $0 </h3>
 </div>
-
 <div id="message"></div>
-
-<br><br>
-<button id="logout">Logout</button>
-<div id="logoutMessage"></div>
+<br>
+<br>
+<br>
+<div>
+    <h3 id="accountProfit">Profit</h3>
+    <h3 id="percentChange">% Change</h3>
+</div>
+<br>
+<br>
 
 <br> 
 <div id="DisplayPieGraph"></div>
 <br>
+<button id="logout">Logout</button>
+<div id="logoutMessage"></div>
 
-<script src="account.js">
-
- 
-
-</script>
+<script src="account.js"></script>
 
 </body>
 </html>

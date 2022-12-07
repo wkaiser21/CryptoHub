@@ -5,9 +5,7 @@ let message = document.getElementById("message");
 
 login.addEventListener("click", submitLogin);
 
-
 function submitLogin() {
-    
     fetch("/login", {
         method: "POST",
         headers: {
@@ -29,7 +27,6 @@ function submitLogin() {
         }).catch((error) => {
         console.log(error);
     });
-    
 }
 
 

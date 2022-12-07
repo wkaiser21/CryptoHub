@@ -5,9 +5,7 @@ let message = document.getElementById("message");
 
 submit.addEventListener("click", submitCreateAccount);
 
-
 function submitCreateAccount() {
-    
     fetch("/create", {
         method: "POST",
         headers: {

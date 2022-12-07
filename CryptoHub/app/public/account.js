@@ -6,6 +6,8 @@ let eosValue = document.getElementById("eosValue");
 let rippleValue = document.getElementById("rippleValue");
 let username = document.cookie.split("=")[1];
 let logout = document.getElementById("logout");
+let accountProfit = document.getElementById("accountProfit");
+let percentChange = document.getElementById("percentChange");
 let totalValue = 0;
 let ethPercentage = 0;
 let bitPercentage = 0;
@@ -15,7 +17,7 @@ let ripplePercentage = 0;
 
 logout.addEventListener("click", submitLogout);
 
-accountName.textContent = (username + "'s" + " Account");
+accountName.textContent = (username + "'s" + " Account Value Across All Portfolios");
 
 fetch("/account", {
     method: "POST",
@@ -33,11 +35,9 @@ fetch("/account", {
     }
 }).then(data => {
     totalValue += data;
-
-    accountValue.textContent = ("Total Account Value: " + "$" + data.toLocaleString());
+    console.log("account data " + data);
 })
 
-//grab eth value
 fetch("/getEthValue", {
     method: "POST",
     headers: {
@@ -59,7 +59,6 @@ fetch("/getEthValue", {
     ethValue.textContent = ("Ethereum Value: " + "$" + data.toLocaleString());
 })
 
-//grab bit value
 fetch("/getBitValue", {
     method: "POST",
     headers: {
@@ -71,11 +70,7 @@ fetch("/getBitValue", {
 }).then(response => {
     if (response.status === 200) {
         bitPercentage = 0;
-        console.log("inside if error");
         return response.json();
-    } else {
-        console.log("inside else error");
-        console.log("No Account found");
     }
 }).then(data => {
     console.log("bit data" + data);
@@ -83,8 +78,6 @@ fetch("/getBitValue", {
     bitValue.textContent = ("Bitcoin Value: " + "$" + data.toLocaleString());
 })
 
-
-//grab eos value
 fetch("/getEosValue", {
     method: "POST",
     headers: {
@@ -105,8 +98,6 @@ fetch("/getEosValue", {
     eosValue.textContent = ("Eos Value: " + "$" + data.toLocaleString());
 })
 
-
-//grab ripple value
 fetch("/getRippleValue", {
     method: "POST",
     headers: {
@@ -125,8 +116,6 @@ fetch("/getRippleValue", {
     ripplePercentage = data / totalValue;
     rippleValue.textContent = ("Ripple Value: " + "$" + data.toLocaleString());
     
-
-
 let display = document.getElementById('DisplayPieGraph');
 
 const coinInfo = [{
@@ -142,6 +131,136 @@ const coinInfo = [{
   
 Plotly.newPlot(display, coinInfo, layout);
 })
+
+
+function calculateProfitLoss() {
+    
+    let bitLiveValue;
+    let ethLiveValue;
+    let eosLiveValue;
+    let ripLiveValue;
+    let oldAccountSum = 0;
+
+    fetch("/account", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "username": username
+        })
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            console.log("No Account found");
+        }
+    }).then(data => {
+        oldAccountSum += data;
+        
+    })
+
+    fetch("/tablesearch?coin="+"bitcoin")
+    .then((response) => {
+        if (response.status === 200) { 
+            return response.json();
+        } 
+    }).then((body) => {
+        bitLiveValue = body.data["current_price"];
+
+    })
+
+    fetch("/tablesearch?coin="+"ethereum")
+    .then((response) => {
+        if (response.status === 200) { 
+            return response.json();
+        } 
+    }).then((body) => {
+        ethLiveValue = body.data["current_price"];
+
+    })
+
+    fetch("/tablesearch?coin="+"eos")
+    .then((response) => {
+        if (response.status === 200) { 
+            return response.json();
+        } 
+    }).then((body) => {
+        eosLiveValue = body.data["current_price"];
+
+    })
+
+    fetch("/tablesearch?coin="+"ripple")
+    .then((response) => {
+        if (response.status === 200) { 
+            return response.json();
+        } 
+    }).then((body) => {
+        ripLiveValue = body.data["current_price"];
+
+        fetch("/getLiveAccountBalance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "username": username
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                console.log("No Account found");
+            }
+        }).then(data => {
+            let bitLiveSum;
+            let ethLiveSum;
+            let eosLiveSum;
+            let ripLiveSum;
+            let totalSum;
+
+            for (i = 0; i < data.length; i++) {
+                if (data[i].coin.startsWith("bitcoin")) {
+                    bitLiveSum = data[i].amount * bitLiveValue;
+                    console.log("inside for if " + bitLiveSum);
+                }
+                console.log("bit live coin " + data[i].coin);
+                if (data[i].coin.startsWith("ethereum")) {
+                    ethLiveSum = data[i].amount * ethLiveValue;
+                }
+                if (data[i].coin.startsWith("eos")) {
+                    eosLiveSum = data[i].amount * eosLiveValue;
+                }
+                if (data[i].coin.startsWith("ripple")) {
+                    ripLiveSum = data[i].amount * ripLiveValue;
+                } 
+                else {
+                    totalSum = 0;
+                }
+            }
+            
+            liveAccountSum = bitLiveSum + ethLiveSum + eosLiveSum + ripLiveSum;
+            let profitLossPercent = (liveAccountSum/oldAccountSum);
+            console.log(profitLossPercent + " %");
+            accountValue.textContent = ("Total Account Value: " + "$" + liveAccountSum.toLocaleString());
+            bitValue.textContent = ("Bitcoin Value: " + "$" + bitLiveSum.toLocaleString());
+            ethValue.textContent = ("Ethereum Value: " + "$" + ethLiveSum.toLocaleString());
+            rippleValue.textContent = ("Ripple Value: " + "$" + ripLiveSum.toLocaleString());
+            eosValue.textContent = ("Eos Value: " + "$" + eosLiveSum.toLocaleString());
+            let difference = liveAccountSum - oldAccountSum;
+            console.log("difference" + difference);
+            if (liveAccountSum >= oldAccountSum) {
+                accountProfit.textContent = ("Account Profit is $" + parseFloat(difference).toFixed(2));
+            }
+            else {
+                accountProfit.textContent = ("Account Loss is $" + parseFloat(-difference).toFixed(2));
+            }
+            percentChange.textContent = (parseFloat(profitLossPercent).toFixed(3) + " % Change")
+        })
+    })
+}    
+calculateProfitLoss();
+
 
 function submitLogout() {
     fetch("/logout", {

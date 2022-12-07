@@ -26,14 +26,16 @@ app.get("/" , (req, res) => {
 app.post("/grabPortfolios", (req, res) => {
     let username = req.body.username;
 
-    pool.query(`SELECT DISTINCT portfolio FROM runningportfolio WHERE username = $1`, [username])
+    pool.query(`SELECT DISTINCT portfolio FROM portfolio WHERE username = $1`, [username])
         .then((result) => {
             let portfolioNames = [];
+            let zero = 0;
+            
             for (i = 0; i < result.rows.length; i++) {
-                portfolioNames.push(Object.values(result.rows[i]));
+                portfolioNames.push(result.rows[i].portfolio);
             }
-            console.log(portfolioNames.flat());
-            res.status(200).send(portfolioNames.flat());
+            console.log("sending result " + result.rows[0].portfolio);
+            res.status(200).send(portfolioNames);
         })
         .catch((error) => {
             console.log(error + "Didn't grab");
@@ -42,6 +44,40 @@ app.post("/grabPortfolios", (req, res) => {
     });
 
 
+app.post("/returnSelectedPortfolio", (req, res) => {
+    let username = req.body.username;
+    let selectedPortfolio = req.body.selectedP;
+
+    pool.query(`SELECT coin, sum(amount), SUM(amount * value)as value FROM portfolio WHERE portfolio = $1 and username = $2 GROUP BY username, portfolio, coin;`, [selectedPortfolio, username])
+        .then((result) => {
+
+            console.log("sending selected portfolio " + result.rows);
+            res.status(200).send(result.rows);
+        })
+        .catch((error) => {
+            console.log(error + "Didn't send selected portfolios");
+            res.status(500).send();
+        });
+    });
+
+    
+app.post("/returnPortfolioTransactions", (req, res) => {
+    let username = req.body.username;
+    let selectedPortfolio = req.body.selectedP2;
+
+    pool.query(`SELECT coin, amount, (amount * value)as value, date FROM portfolio WHERE portfolio = $1 and username = $2 order by date desc;`, [selectedPortfolio, username])
+        .then((result) => {
+
+            console.log("sending selected portfolio transactions " + result.rows);
+            res.status(200).send(result.rows);
+        })
+        .catch((error) => {
+            console.log(error + "Didn't send selected portfolios transactions");
+            res.status(500).send();
+        });
+    });
+
+    
 app.get("/tablesearch", (req, res) =>{
     if(!(req.query.hasOwnProperty("coin"))){
          res.status(400).json({error: "Invalid origin or destination"});
@@ -52,7 +88,11 @@ app.get("/tablesearch", (req, res) =>{
         .then((response) => {
             //console.log(response.data);
         res.status(200).json({data: response.data[0]}); 
-         }); 
+         })
+         .catch((error) => {
+            console.log(error + "Too many API requests, please wait a minute");
+            res.status(429).send();
+        });
     }
 }); 
 
@@ -69,7 +109,11 @@ app.get("/graphsearch", (req, res) =>{
         .then((response) => {
             //console.log(response.data);
             res.status(200).json({data: response.data}); 
-         }); 
+         })
+        .catch((error) => {
+            console.log(error + "Too many API requests, please wait a minute");
+            res.status(429).send();
+        });
     }
 }); 
 
@@ -436,8 +480,34 @@ app.post("/getRippleValue", async (req, res) => {
             console.log(error);
             res.send();
         });
-    });
+});
 
+app.post("/getLiveAccountBalance", (req, res) => {
+    let loggedInUser = req.cookies.username;
+    pool.query(`SELECT coin, SUM(amount) as amount FROM runningportfolio WHERE username = $1 GROUP BY coin`, [loggedInUser]
+    ).then((result) => {
+
+        data = result.rows;
+        zeroData = 0;
+        if (data == null) {
+            res.send([zeroData]);
+        }
+        else if (data < 0) {
+            res.send([zeroData]);
+            console.log("this is zero");
+        }
+        else {
+            res.status(200);
+            console.log(data);
+            res.send(data);
+        }
+    })
+    .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        res.send();
+    });
+})
 
 
 app.listen(port, hostname, () => {
