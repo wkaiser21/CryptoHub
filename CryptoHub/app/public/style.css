@@ -15,15 +15,29 @@
     margin: 0 auto;
 }
 
-.logo {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
 .logo-corner {
     width: 15%;
     height: 15%;
-    position: fixed;
     top: 0;
     left: 0;
+    margin-top: -50px;
+    margin-left: -20px;
+}
+
+.site-links {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.content {
+    max-width: 700px;
+    margin: auto;
+}
+
+.content-account {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    margin-left: 30vw;
 }

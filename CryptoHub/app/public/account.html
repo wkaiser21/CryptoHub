@@ -10,13 +10,13 @@
 	<link rel="stylesheet" href="style.css">
 	<style>
 		#logout{
-			margin-top: 90px;
+			margin-top: 0.5vh;
+			margin-left: 0.5vw;
 		}
 	</style>
 </head>
 <body>
-
-	<ul class="nav nav-pills justify-content-end">
+	<ul class="nav nav-pills justify-content-end site-links">
 		<li class="nav-item">
 			<a class="nav-link" href="search.html">Search</a>
 		</li>
@@ -30,30 +30,29 @@
 	
 	<img class="logo-corner" src="https://live.staticflickr.com/65535/52548537119_95b7328f39_h.jpg" alt="logo">
 
-    <button id="logout" class="btn btn-outline-primary btn-block mb-4">Logout</button>
-    <div id="logoutMessage"></div>
-<div>
-    <h1 id="accountName"></h1>
-    <h3 id="bitcoinValue">Bitcoin Value: $0 </h3>
-    <h3 id="ethereumValue">Ethereum Value: $0 </h3>
-    <h3 id="rippleValue">Ripple Value: $0 </h3>
-    <h3 id="eosValue">Eos Value: $0 </h3>
-    <h3 id="accountValue">Total Account Value: $0 </h3>
-</div>
-<div id="message"></div>
-<br>
-<br>
-<br>
-<div>
-    <h3 id="accountProfit">Profit</h3>
-    <h3 id="percentChange">% Change</h3>
-</div>
-<br>
-<br>
-
-<br> 
-<div id="DisplayPieGraph"></div>
-<br>
+	<div>
+		<button id="logout" class="btn btn-outline-primary btn-block mb-4">Logout</button>
+	<div id="logoutMessage"></div>
+	</div>
+	<div class="content-account">
+		<div class="container-account justify-content-center">
+		<div>
+			<h1 id="accountName"></h1>
+			<h3 id="bitcoinValue">Bitcoin Value: $0 </h3>
+			<h3 id="ethereumValue">Ethereum Value: $0 </h3>
+			<h3 id="rippleValue">Ripple Value: $0 </h3>
+			<h3 id="eosValue">Eos Value: $0 </h3>
+			<h3 id="accountValue">Total Account Value: $0 </h3>
+		</div>
+		<div id="message"></div>
+		
+		<div>
+			<h3 id="accountProfit">Profit</h3>
+			<h3 id="percentChange">% Change</h3>
+		</div>
+		
+		<div id="DisplayPieGraph"></div>
+	</div> 
 
 <script src="account.js"></script>
 <!-- JavaScript Bundle with Popper -->
