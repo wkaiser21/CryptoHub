@@ -186,7 +186,7 @@ app.post("/removeFromPortfolio", (req, res) => {
     pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length != 0) {
-            pool.query(`UPDATE runningportfolio SET amount = (amount - $1) WHERE coin  = $2 and  portfolio = $3`, [amount, coin, portfolio])
+            pool.query(`UPDATE runningportfolio SET amount = (amount + $1) WHERE coin  = $2 and  portfolio = $3`, [amount, coin, portfolio])
                 .then(() => {
                     console.log(username, "Removed successfully from runningportfolio");
                     res.status(200).send();
@@ -293,6 +293,7 @@ app.post("/account", async (req, res) => {
             }
             else if (data < 0) {
                 res.send([zeroData]);
+                console.log("zero");
             }
             else {
                 res.status(200);

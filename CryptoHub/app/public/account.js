@@ -110,21 +110,6 @@ fetch("/getRippleValue", {
 }).then(data => {
     ripplePercentage = data / totalValue;
     rippleValue.textContent = ("Ripple Value: " + "$" + data.toLocaleString());
-    
-let display = document.getElementById('DisplayPieGraph');
-
-const coinInfo = [{
-    values: [bitPercentage, ethPercentage, ripplePercentage, eosPercentage],
-    labels: ['Bitcoin', 'Ethereum', 'Ripple', 'EOS'],
-    type: 'pie'
-  }];
-  
-  const layout = {
-    height: 400,
-    width: 500
-  };
-  
-Plotly.newPlot(display, coinInfo, layout);
 })
 
 
@@ -231,8 +216,31 @@ function calculateProfitLoss() {
                     totalSum = 0;
                 }
             }
+
+            let display = document.getElementById('DisplayPieGraph');
+
+            const coinInfo = [{
+                values: [bitPercentage, ethPercentage, ripplePercentage, eosPercentage],
+                labels: ['Bitcoin', 'Ethereum', 'Ripple', 'EOS'],
+                type: 'pie'
+              }];
+              
+              const layout = {
+                height: 400,
+                width: 500
+              };
+              
+            Plotly.newPlot(display, coinInfo, layout);
+
+
             liveAccountSum = bitLiveSum + ethLiveSum + eosLiveSum + ripLiveSum;
-            let profitLossPercent = (liveAccountSum/oldAccountSum);
+            let profitLossPercent;
+            if (oldAccountSum === "00") {
+                profitLossPercent = (1.01 - liveAccountSum/liveAccountSum);
+            } 
+            else {
+                profitLossPercent = (1.01 - liveAccountSum/oldAccountSum)
+            };
             accountValue.textContent = ("Total Account Value: " + "$" + liveAccountSum.toLocaleString());
             bitValue.textContent = ("Bitcoin Value: " + "$" + bitLiveSum.toLocaleString());
             ethValue.textContent = ("Ethereum Value: " + "$" + ethLiveSum.toLocaleString());

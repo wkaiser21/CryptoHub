@@ -169,7 +169,6 @@ removeCoinButton.addEventListener("click", () => {
         .then(res => res.json())
         .then(body => { 
             currentPrice = body.data["current_price"];
-            console.log("Live Price Inside Fetch: " + currentPrice);
 
         fetch("/removeFromPortfolio", {
             method: "POST",
