@@ -10,6 +10,11 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
+    <style>
+        h1{ 
+            text-align:center;
+        }
+    </style> 
 </head>
 <body>
     <div class="portfolio-container">
@@ -28,63 +33,76 @@
                 <a class="nav-link" href="account.html">Account</a>
             </li>
         </ul>
-        <div>
-            <h1 id="pName">Portfolio</h1>
-            <h3>Your list of portfolios:</h3>
-            <h4 id="portfolioList">List</h4>
-            <table>
-                <tbody id="portfolioTable">
-    
-                </tbody>
-            </table>
-        </div>
+
+        <h1 id="pName">Portfolio</h1>
         <br>
-        <h2>Remove From Portfolio</h3>
-        <div class = "portremove">
-            <div>
-                <label for="pickPortfolio">Portfolio:</label>
-                <input type="text" id="pickPortfolio" name="pickPortfolio">
-                <label for="removeCoins">Coin:</label>
-                <select id="removeCoins" name="removeCoins">
-                    <option value="">Select coin</option>
-                    <option value="bitcoin">Bitcoin</option>
-                    <option value="ethereum">Ethereum</option>
-                    <option value="ripple">Ripple</option>
-                    <option value="eos">Eos</option>
-                </select>
+        <div class="container text-center">
+            <div class="row align-items-start">
+              <div class="col">
+                <div>
+                    <h3>Your list of portfolios:</h3>
+                    <h4 id="portfolioList">List</h4>
+                    <table>
+                        <tbody id="portfolioTable">
+            
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <h2>Remove From Portfolio</h3>
+                <div class = "portremove">
+                    <div>
+                        <label for="pickPortfolio">Portfolio:</label>
+                        <input type="text" id="pickPortfolio" name="pickPortfolio">
+                        <label for="removeCoins">Coin:</label>
+                        <select id="removeCoins" name="removeCoins">
+                            <option value="">Select coin</option>
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="ethereum">Ethereum</option>
+                            <option value="ripple">Ripple</option>
+                            <option value="eos">Eos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="removeamount">Amount:</label>
+                        <input id="removeamount" type="number" name="removeamount">
+                        <button id="removesubmit" class="btn btn-outline-primary btn-block mb-4">Remove</button>
+                    </div>
+                    <div id="removeMessage"></div>
+                </div>
+              </div>
+              <div class="col">
+                <h2>Current Portfolio Holdings</h2>
+                <label for="portfolioNames">Portfolio Names:</label>
+                        <select id="portfolioNames" name="portfolioNames">
+                        </select>
+                        <button id="portfolioSelect" class="btn btn-outline-primary btn-block mb-4">Select</button>
+                
+                <table>
+                    <thead>
+                        <tr><th>Coin</th><th>Amount</th><th>Value</th></tr>
+                    </thead>
+                    <tbody id="returnedPortfolio"></tbody>
+                </table>
+                
+              </div>
+              <div class="col">
+                <h2>Portfolio Transactions</h2>
+                <label for="portfolioNames2">Portfolio Names:</label>
+                        <select id="portfolioNames2" name="portfolioNames2">
+                        </select>
+                        <button id="getTransactions" class="btn btn-outline-primary btn-block mb-4">Select</button>
+                
+                <table>
+                    <thead>
+                        <tr><th>Coin</th><th>Amount</th><th>Value</th><th>Date</th></tr>
+                    </thead>
+                    <tbody id="returnedPortfolioTransactions"></tbody>
+                </table>
+              </div>
             </div>
-            <div>
-                <label for="removeamount">Amount:</label>
-                <input id="removeamount" type="number" name="removeamount">
-                <button id="removesubmit" class="btn btn-outline-primary btn-block mb-4">Remove</button>
-            </div>
-            <div id="removeMessage"></div>
         </div>
-    <h2>Current Portfolio Holdings</h2>
-    <label for="portfolioNames">Portfolio Names:</label>
-            <select id="portfolioNames" name="portfolioNames">
-            </select>
-            <button id="portfolioSelect" class="btn btn-outline-primary btn-block mb-4">Select</button>
-    
-    <table>
-        <thead>
-            <tr><th>Coin</th><th>Amount</th><th>Value</th></tr>
-        </thead>
-        <tbody id="returnedPortfolio"></tbody>
-    </table>
-    
-    <h2>Portfolio Transactions</h2>
-    <label for="portfolioNames2">Portfolio Names:</label>
-            <select id="portfolioNames2" name="portfolioNames2">
-            </select>
-            <button id="getTransactions" class="btn btn-outline-primary btn-block mb-4">Select</button>
-    
-    <table>
-        <thead>
-            <tr><th>Coin</th><th>Amount</th><th>Value</th><th>Date</th></tr>
-        </thead>
-        <tbody id="returnedPortfolioTransactions"></tbody>
-    </table>
+ 
     </div>
 </body>
 <script src="portfolio.js"></script>
