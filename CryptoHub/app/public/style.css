@@ -23,4 +23,7 @@
 .logo-corner {
     width: 15%;
     height: 15%;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
