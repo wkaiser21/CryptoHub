@@ -22,7 +22,6 @@ app.get("/" , (req, res) => {
     res.redirect('/login.html');
 });
 
-
 app.post("/grabPortfolios", (req, res) => {
     let username = req.body.username;
 
@@ -34,7 +33,6 @@ app.post("/grabPortfolios", (req, res) => {
             for (i = 0; i < result.rows.length; i++) {
                 portfolioNames.push(result.rows[i].portfolio);
             }
-            console.log("sending result " + result.rows[0].portfolio);
             res.status(200).send(portfolioNames);
         })
         .catch((error) => {
@@ -86,7 +84,6 @@ app.get("/tablesearch", (req, res) =>{
         let reqcoin = req.query.coin; 
         axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${reqcoin}`)
         .then((response) => {
-            //console.log(response.data);
         res.status(200).json({data: response.data[0]}); 
          })
          .catch((error) => {
@@ -107,7 +104,6 @@ app.get("/graphsearch", (req, res) =>{
         console.log(req.query); 
         axios.get(`https://api.coingecko.com/api/v3/coins/${reqcoin}/market_chart/range?vs_currency=usd&from=${reqfrom}&to=${reqto}`)
         .then((response) => {
-            //console.log(response.data);
             res.status(200).json({data: response.data}); 
          })
         .catch((error) => {
@@ -123,11 +119,6 @@ app.post("/addToPortfolio", (req, res) => {
     let coin = req.body.coin;
     let amount = req.body.amount;
     let value = req.body.value;
-    console.log(username);
-    console.log(portfolio);
-    console.log(coin);
-    console.log(amount);
-    console.log(value);
 
     pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, value])
         .then(() => {
@@ -177,12 +168,6 @@ app.post("/removeFromPortfolio", (req, res) => {
     let coin = req.body.coin;
     let amount = req.body.amount;
     let value = req.body.value;
-    console.log(username);
-    console.log(portfolio);
-    console.log(coin);
-    console.log(amount);
-    console.log(value);
-
 
     pool.query(`SELECT SUM(value) FROM portfolio WHERE coin = $1 and username = $2 and portfolio = $3`, [coin, username, portfolio])
     .then((result) => {
@@ -196,23 +181,8 @@ app.post("/removeFromPortfolio", (req, res) => {
             console.log(error + "Insert failed");
             res.status(500).send();
         });
-        }
-        // else {
-        //     let liveBalalance = (-result.rows[0].sum);
-        //     console.log("live balance " + liveBalalance);
-        //     pool.query(`INSERT INTO portfolio (username, portfolio, coin, amount, value, date) VALUES ($1, $2, $3, $4, $5, current_timestamp)`, [username, portfolio, coin, amount, liveBalalance])
-        //     .then(() => {
-        //     console.log(username, "Inserted Negative Successfully into original portfolio");
-        //     res.status(200).send();
-        // })
-        //     .catch((error) => {
-        //     console.log(error + "Insert failed");
-        //     res.status(500).send();
-        // });
-        // }
-    })   
+        }})   
 
-    //remove from runningportfolio
     pool.query(`SELECT * FROM users WHERE username = $1`, [username])
     .then((result) => {
         if (result.rows.length != 0) {
@@ -275,7 +245,6 @@ app.post("/login" , (req, res) => {
             .then((correctPassword) => {
                 if (correctPassword) {
                     res.cookie('username', username);
-                    console.log(res.cookie);
                     res.status(200).send();
                 } else {
                     res.status(401).send();
@@ -299,9 +268,6 @@ app.get("/logout", (req,res) => {
 
 app.post("/portfolio", (req, res) => {
     let loggedInUser = req.cookies.username;
-    if (loggedInUser) {
-        console.log(loggedInUser);
-    }
     pool.query(`SELECT * FROM users WHERE username = $1`, [loggedInUser]
         ).then((result) => {
             data = {username: loggedInUser};
@@ -316,40 +282,6 @@ app.post("/portfolio", (req, res) => {
         });
 });
 
-app.get("/portfolioinfo", (req, res) =>{
-    if(!(req.query.hasOwnProperty("coin")) && !(req.query.hasOwnProperty("portfolio")) ){
-          res.status(400).json({error: "Invalid coin or portfolio"});
-     }
-     else{
-         let reqcoin = req.query.coin; 
-         let reqport = req.query.portfolio; 
-         console.log(req.query); 
-        if(reqport == "PortfolioTotal"){ //For total portfolio value
-            if(reqcoin == "allcoins"){
-                //do query for all portfolios and all coins 
-            }
-            else{
-                //do query for all portfolios and specific coin
-            }
-        }
-        else{//For indivual portfolio value
-            if(reqcoin == "allcoins"){
-                //do query for specific portfolios and all coins 
-            }
-            else{
-                //do query for specific portfolios and specific coin
-            }
-
-        }
-
-        //  pool.query()  /// ADD QUERY LINE 
-        //  .then((response) => {
-        //      //console.log(response.data);
-        //      res.status(200).json({data: response.data}); 
-        //   }); 
-     }
- }); 
-
 app.post("/account", async (req, res) => {
     let loggedInUser = req.cookies.username;
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE username = $1`, [loggedInUser]
@@ -361,7 +293,6 @@ app.post("/account", async (req, res) => {
             }
             else if (data < 0) {
                 res.send([zeroData]);
-                console.log("this is zero");
             }
             else {
                 res.status(200);
@@ -387,7 +318,6 @@ app.post("/getEthValue", async (req, res) => {
         }
         else if (data < 0) {
             res.send([zeroData]);
-            console.log("this is zero");
         }
         else {
             res.status(200);
@@ -410,11 +340,9 @@ app.post("/getBitValue", async (req, res) => {
             zeroData = 0;
             if (data == null) {
                 res.send([zeroData]);
-                console.log("this is null");
             }
             else if (data < 0) {
                 res.send([zeroData]);
-                console.log("this is zero");
             }
             else {
                 res.status(200);
@@ -423,7 +351,7 @@ app.post("/getBitValue", async (req, res) => {
         })
         .catch((error) => {
             res.sendStatus(500);
-            console.log("get bitValue error" + error);
+            console.log(error);
             res.send();
         });
     });
@@ -440,7 +368,6 @@ app.post("/getEosValue", async (req, res) => {
             }
             else if (data < 0) {
                 res.send([zeroData]);
-                console.log("this is zero");
             }
             else {
                 res.status(200);
@@ -459,8 +386,6 @@ app.post("/getRippleValue", async (req, res) => {
     
     pool.query(`SELECT SUM(amount * value) FROM portfolio WHERE coin = 'ripple' and username = $1`, [loggedInUser]
         ).then((result) => {
-            console.log("rip value " + result.rows[0]);
-            console.log("rip value sum" + result.rows[0].sum);
             data = result.rows[0].sum;
             zeroData = 0;
             if (data == null) {
@@ -468,7 +393,6 @@ app.post("/getRippleValue", async (req, res) => {
             }
             else if (data < 0) {
                 res.send([zeroData]);
-                console.log("this is zero");
             }
             else {
                 res.status(200);
@@ -494,7 +418,6 @@ app.post("/getLiveAccountBalance", (req, res) => {
         }
         else if (data < 0) {
             res.send([zeroData]);
-            console.log("this is zero");
         }
         else {
             res.status(200);

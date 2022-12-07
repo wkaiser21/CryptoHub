@@ -35,7 +35,6 @@ fetch("/account", {
     }
 }).then(data => {
     totalValue += data;
-    console.log("account data " + data);
 })
 
 fetch("/getEthValue", {
@@ -52,9 +51,7 @@ fetch("/getEthValue", {
     } else {
         console.log("No Account found");
     }
-}).then(data => {
-    console.log("eth data" + data);
-    
+}).then(data => { 
     ethPercentage = data / totalValue;
     ethValue.textContent = ("Ethereum Value: " + "$" + data.toLocaleString());
 })
@@ -73,7 +70,6 @@ fetch("/getBitValue", {
         return response.json();
     }
 }).then(data => {
-    console.log("bit data" + data);
     bitPercentage = data / totalValue;
     bitValue.textContent = ("Bitcoin Value: " + "$" + data.toLocaleString());
 })
@@ -93,7 +89,6 @@ fetch("/getEosValue", {
         console.log("No Account found");
     }
 }).then(data => {
-    console.log("bit percentage in eos value" + bitPercentage);
     eosPercentage = data / totalValue;
     eosValue.textContent = ("Eos Value: " + "$" + data.toLocaleString());
 })
@@ -222,9 +217,7 @@ function calculateProfitLoss() {
             for (i = 0; i < data.length; i++) {
                 if (data[i].coin.startsWith("bitcoin")) {
                     bitLiveSum = data[i].amount * bitLiveValue;
-                    console.log("inside for if " + bitLiveSum);
                 }
-                console.log("bit live coin " + data[i].coin);
                 if (data[i].coin.startsWith("ethereum")) {
                     ethLiveSum = data[i].amount * ethLiveValue;
                 }
@@ -238,17 +231,14 @@ function calculateProfitLoss() {
                     totalSum = 0;
                 }
             }
-            
             liveAccountSum = bitLiveSum + ethLiveSum + eosLiveSum + ripLiveSum;
             let profitLossPercent = (liveAccountSum/oldAccountSum);
-            console.log(profitLossPercent + " %");
             accountValue.textContent = ("Total Account Value: " + "$" + liveAccountSum.toLocaleString());
             bitValue.textContent = ("Bitcoin Value: " + "$" + bitLiveSum.toLocaleString());
             ethValue.textContent = ("Ethereum Value: " + "$" + ethLiveSum.toLocaleString());
             rippleValue.textContent = ("Ripple Value: " + "$" + ripLiveSum.toLocaleString());
             eosValue.textContent = ("Eos Value: " + "$" + eosLiveSum.toLocaleString());
             let difference = liveAccountSum - oldAccountSum;
-            console.log("difference" + difference);
             if (liveAccountSum >= oldAccountSum) {
                 accountProfit.textContent = ("Account Profit is $" + parseFloat(difference).toFixed(2));
             }
