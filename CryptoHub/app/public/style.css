@@ -14,3 +14,13 @@
 .login-table {
     margin: 0 auto;
 }
+
+.logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.logo-corner {
+    width: 15%;
+    height: 15%;
+}

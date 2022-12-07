@@ -22,7 +22,7 @@ function submitLogin() {
         message.innerText = "Username or Password didn't match"
         } if(body.status === 200) {
         message.innerText = "Logged in successfully"
-        location.href = "portfolio.html";
+        location.href = "account.html";
         }
         }).catch((error) => {
         console.log(error);
