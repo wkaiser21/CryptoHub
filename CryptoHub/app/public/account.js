@@ -137,7 +137,6 @@ function calculateProfitLoss() {
         }
     }).then(data => {
         oldAccountSum += data;
-        
     })
 
     fetch("/tablesearch?coin="+"bitcoin")
@@ -232,15 +231,30 @@ function calculateProfitLoss() {
               
             Plotly.newPlot(display, coinInfo, layout);
 
+            if (typeof(bitLiveSum) == "undefined") {
+                bitLiveSum = 0;
+            }
+            if (typeof(ethLiveSum) == "undefined") {
+                ethLiveSum = 0;
+            }
+            if (typeof(ripLiveSum) == "undefined") {
+                ripLiveSum = 0;
+            }
+            if (typeof(eosLiveSum) == "undefined") {
+                eosLiveSum = 0;
+            }
 
             liveAccountSum = bitLiveSum + ethLiveSum + eosLiveSum + ripLiveSum;
             let profitLossPercent;
-            if (oldAccountSum === "00") {
-                profitLossPercent = (1.01 - liveAccountSum/liveAccountSum);
+            if (oldAccountSum === 0 || liveAccountSum === 0) {
+                profitLossPercent = 0;
             } 
             else {
-                profitLossPercent = (1.01 - liveAccountSum/oldAccountSum)
+                profitLossPercent = ((liveAccountSum - oldAccountSum) / oldAccountSum);
             };
+            if (typeof(bitLiveSum) == "undefined") {
+                bitLiveSum = 0;
+            }
             accountValue.textContent = ("Total Account Value: " + "$" + liveAccountSum.toLocaleString());
             bitValue.textContent = ("Bitcoin Value: " + "$" + bitLiveSum.toLocaleString());
             ethValue.textContent = ("Ethereum Value: " + "$" + ethLiveSum.toLocaleString());
@@ -253,7 +267,7 @@ function calculateProfitLoss() {
             else {
                 accountProfit.textContent = ("Account Loss is $" + parseFloat(-difference).toFixed(2));
             }
-            percentChange.textContent = (parseFloat(profitLossPercent).toFixed(3) + " % Change")
+            percentChange.textContent = (parseFloat(profitLossPercent).toFixed(5) + " % Change")
         })
     })
 }    
