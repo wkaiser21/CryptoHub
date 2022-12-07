@@ -11,13 +11,18 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
 </head>
-<nav>
-    <a href="search.html">Search</a>
-	|
-	<a href="portfolio.html">Portfolio</a>
-    |
-    <a href="account.html">Account</a>
-</nav>
+
+<ul class="nav justify-content-end">
+    <li class="nav-item">
+        <a href="search.html">Search</a>
+    </li>
+    <li class="nav-item">
+        <a href="portfolio.html">Portfolio</a>
+    </li>
+    <li class="nav-item">
+        <a href="account.html">Account</a>
+    </li>
+</ul>
 <body>
     <div>
         <h1 id="pName">Portfolio</h1>
@@ -47,7 +52,7 @@
         <div>
             <label for="removeamount">Amount:</label>
             <input id="removeamount" type="number" name="removeamount">
-            <button id="removesubmit">Remove</button>
+            <button id="removesubmit" class="btn btn-outline-primary btn-block mb-4">Remove</button>
         </div>
         <div id="removeMessage"></div>
     </div>
@@ -60,7 +65,7 @@
 <label for="portfolioNames">Portfolio Names:</label>
 		<select id="portfolioNames" name="portfolioNames">
 		</select>
-        <button id="portfolioSelect">Select</button>
+        <button id="portfolioSelect" class="btn btn-outline-primary btn-block mb-4">Select</button>
 <br>
 <br>
 <table>
@@ -79,7 +84,7 @@
 <label for="portfolioNames2">Portfolio Names:</label>
 		<select id="portfolioNames2" name="portfolioNames2">
 		</select>
-        <button id="getTransactions">Select</button>
+        <button id="getTransactions" class="btn btn-outline-primary btn-block mb-4">Select</button>
 <br>
 <br>
 <table>

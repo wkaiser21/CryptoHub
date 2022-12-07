@@ -5,3 +5,12 @@
 .login-container {
     padding-top: 50px;
 }
+
+.logo-pic {
+    width: 110%;
+    height: 110%;
+}
+
+.login-table {
+    margin: 0 auto;
+}
