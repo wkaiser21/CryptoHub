@@ -83,19 +83,21 @@
                 </table>
                 
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 transaction-panel">
                 <h2>Portfolio Transactions</h2>
                 <label for="portfolioNames2">Portfolio Names:</label>
                         <select id="portfolioNames2" name="portfolioNames2">
                         </select>
                         <button id="getTransactions" class="btn btn-outline-primary btn-block mb-4">Select</button>
-                
-                <table>
-                    <thead>
-                        <tr><th>Coin</th><th>Amount</th><th>Value</th><th>Date</th></tr>
-                    </thead>
-                    <tbody id="returnedPortfolioTransactions"></tbody>
-                </table>
+
+                <div class="transaction-table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Coin</th><th>Amount</th><th>Value</th><th>Date</th></tr>
+                        </thead>
+                        <tbody id="returnedPortfolioTransactions"></tbody>
+                    </table>
+                </div>
               </div>
             </div>
         </div>
